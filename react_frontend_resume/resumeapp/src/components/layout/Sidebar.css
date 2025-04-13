@@ -1,0 +1,13 @@
+a{
+    text-decoration: none !important;
+    /* background-color: black; */
+}
+.bg-nav-active{
+    /* background-color:  #61dbfb; */
+    background-color: rgb(0, 255, 136) ;
+    /* background-color: rgb(0, 255, 128) !important; */
+    /* background-color: #39FF14 !important; */
+    /* background-color: #1fa5ff !important; */
+    /* border-color: aqua !important; */
+    /* color: black !important; */
+}
