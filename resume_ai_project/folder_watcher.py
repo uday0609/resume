@@ -82,11 +82,11 @@ def watch_resume_folder():
             print(f"🕒 Batch has only {len(batch)} resumes, waiting to complete 10.")
 
         # Delete processed resumes
-        # delete_processed_resumes(processed_files)
-        # print("🗑️ All processed resumes deleted.\n")
+        delete_processed_resumes(processed_files)
+        print("🗑️ All processed resumes deleted.\n")
 
-        # # Wait before checking again
-        # time.sleep(5)
+        # Wait before checking again
+        time.sleep(5)
 
 # 🔁 Run watcher only when executed directly
 if __name__ == "__main__":

@@ -4,41 +4,24 @@ from sentence_transformers import SentenceTransformer, util
 import torch
 from fetch_jobs import fetch_all_jobs
 from extract_resume import process_all_resumes
+from datetime import datetime
 
-# ✅ Load AI Model
+# Load Model
 model = SentenceTransformer('BAAI/bge-large-en-v1.5')
 
-# ✅ Function to Get Text Embeddings
+# Global Batch
+selected_batch = []
+
+# ✅ Utility Logger with Timestamp
+def log(msg):
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}")
+
+# ✅ Get Embedding
 def get_embedding(text):
     return model.encode(text, convert_to_tensor=True)
 
-# ✅ Function to Calculate AI Match (Matched Skills Only)
+# ✅ AI Match using Sentence Transformers
 def calculate_ai_match(resume_skills, job_skills):
-    resume_set = set(map(str.lower, resume_skills))
-    job_set = set(map(str.lower, job_skills.split(",")))
-
-    matched_skills = resume_set.intersection(job_set)
-    if not matched_skills:
-        return 0.0
-
-    matched_skills_text = " ".join(matched_skills)
-    job_skills_text = " ".join(job_set)
-
-    resume_embedding = get_embedding(matched_skills_text)
-    job_embedding = get_embedding(job_skills_text)
-
-    ai_score = util.pytorch_cos_sim(resume_embedding, job_embedding).item() * 100
-    skill_match_ratio = len(matched_skills) / max(len(job_set), 1)
-
-    # Debugging: Print AI score and match ratio
-    print(f"AI Match Score: {ai_score}")
-    print(f"AI Skill Match Ratio: {skill_match_ratio}")
-
-    return round(ai_score * skill_match_ratio, 2)
-
-# ✅ Function to Calculate Skill Match
-def calculate_skill_match(resume_skills, job_skills):
-    # Ensure job_skills is a list
     if isinstance(job_skills, str):
         job_skills = [skill.strip() for skill in job_skills.split(",")]
 
@@ -46,102 +29,111 @@ def calculate_skill_match(resume_skills, job_skills):
     job_set = set(map(str.lower, job_skills))
 
     matched_skills = resume_set.intersection(job_set)
-    skill_match_percentage = (len(matched_skills) / max(len(job_set), 1)) * 100
+    if not matched_skills:
+        return 0.0
 
-    # Debugging: Print matched skills and percentage
-    print(f"Matched Skills: {matched_skills}")
-    print(f"Skill Match Percentage: {skill_match_percentage}%")
+    resume_embedding = get_embedding(" ".join(matched_skills))
+    job_embedding = get_embedding(" ".join(job_set))
 
-    return skill_match_percentage, matched_skills
+    ai_score = util.pytorch_cos_sim(resume_embedding, job_embedding).item() * 100
+    skill_match_ratio = len(matched_skills) / max(len(job_set), 1)
 
-# ✅ Function to Calculate Experience Match
+    return round(ai_score * skill_match_ratio, 2)
+
+# ✅ Skill Match (Simple Set Intersection)
+def calculate_skill_match(resume_skills, job_skills):
+    if isinstance(job_skills, str):
+        job_skills = [skill.strip() for skill in job_skills.split(",")]
+
+    resume_set = set(map(str.lower, resume_skills))
+    job_set = set(map(str.lower, job_skills))
+
+    matched_skills = resume_set.intersection(job_set)
+    percentage = (len(matched_skills) / max(len(job_set), 1)) * 100
+
+    return percentage, matched_skills
+
+# ✅ Experience Match %
 def match_experience(resume_exp, job_exp_required):
     try:
         resume_exp = float(resume_exp)
         job_exp_required = float(job_exp_required)
-        experience_score = min((resume_exp / job_exp_required) * 100, 100) if job_exp_required > 0 else 100
+        return min((resume_exp / job_exp_required) * 100, 100) if job_exp_required > 0 else 100
     except:
-        experience_score = 50
+        return 50
 
-    return experience_score
-
-# ✅ Function to Match Resume with Jobs
+# ✅ Matching Resume With Jobs
 def match_resume_with_jobs(resume, jobs):
     if not jobs:
-        print("❌ No jobs found! Exiting...")
+        log("❌ No jobs found.")
         return []
 
     MATCH_THRESHOLD = 85.0
     resume_exp_raw = resume.get("Experience", "0")
+
     try:
         resume_exp = float(resume_exp_raw)
     except:
         resume_exp = 0.0
 
-    valid_job_matches = []
+    valid_matches = []
+
+    # Track best job for the resume
+    best_match = None
+    best_score = 0.0
 
     for job in jobs:
         job_id = job.get("job_id", "Unknown")
         job_skills = job.get("required_skills", "")
-        job_exp_raw = job.get("experience_required", "")
+        job_exp = job.get("experience_required", 0)
 
-        if not job_skills:
-            continue
-
-        # Ensure job_skills is a list
         if isinstance(job_skills, str):
             job_skills = [skill.strip() for skill in job_skills.split(",")]
 
         try:
-            job_exp = float(str(job_exp_raw).strip())
+            job_exp = float(str(job_exp).strip())
         except:
             job_exp = 0.0
-
-        # Debugging: Check resume and job data
-        print(f"\nResume Experience: {resume_exp}, Job Experience Required: {job_exp}")
-        print(f"Resume Skills: {resume['Skills']}")
-        print(f"Job Skills: {job_skills}")
 
         if resume_exp < job_exp:
             continue
 
-        job_skills = str(job_skills).strip()
-        skill_match_percentage, matched_skills = calculate_skill_match(resume["Skills"], job_skills)
-        ai_match_score = calculate_ai_match(resume["Skills"], job_skills)
-        experience_score = match_experience(resume_exp, job_exp)
+        skill_match, matched_skills = calculate_skill_match(resume["Skills"], job_skills)
+        ai_score = calculate_ai_match(resume["Skills"], job_skills)
+        exp_score = match_experience(resume_exp, job_exp)
 
-        final_score = (
-            (skill_match_percentage * 0.4) +
-            (ai_match_score * 0.4) +
-            (experience_score * 0.2)
-        )
+        final_score = (skill_match * 0.4) + (ai_score * 0.4) + (exp_score * 0.2)
 
-        # Debugging: Print final score calculation
-        print(f"Final Matching Score: {final_score}")
+        print("\n────────────────────────────────────────────")
+        log(f"👤 {resume.get('Name', 'Unknown')} → 🧾 Resume Exp: {resume_exp} yrs")
+        print(f"💼 Job ID: {job_id} | Job Exp Req: {job_exp} yrs")
+        print(f"✅ Matched Skills: {matched_skills}")
+        print(f"📊 Skill Match %: {round(skill_match, 2)}%")
+        print(f"🧠 AI Match %: {round(ai_score, 2)}%")
+        print(f"📈 Exp Match %: {round(exp_score, 2)}%")
+        print(f"🔥 Final Matching Score: {round(final_score, 2)}%")
 
-        if final_score >= MATCH_THRESHOLD:
-            valid_job_matches.append({
+        # Check if this job has a higher matching score
+        if final_score >= MATCH_THRESHOLD and final_score > best_score:
+            best_match = {
                 "Job ID": job_id,
                 "Experience Required": job_exp,
                 "Matching Score": round(final_score, 2),
                 "Required Skills": job_skills,
-                "Skill Match %": round(skill_match_percentage, 2),
-                "AI Match %": round(ai_match_score, 2),
-                "Experience Match %": round(experience_score, 2)
-            })
+                "Skill Match %": round(skill_match, 2),
+                "AI Match %": round(ai_score, 2),
+                "Experience Match %": round(exp_score, 2)
+            }
+            best_score = final_score
 
-    if valid_job_matches:
-        best_job = max(valid_job_matches, key=lambda x: x["Matching Score"])
-        return [best_job]
+    # Add the best match for this resume to the valid matches
+    if best_match:
+        valid_matches.append(best_match)
 
-    return []
+    return valid_matches
 
-# ✅ Function to Send Resume to API
-def send_resume_to_api(resume, job):
-    if not isinstance(resume, dict):
-        print(f"❌ Invalid resume format: {resume}")
-        return  
-
+# ✅ Send Batch to DB
+def send_batch_to_api(resume_batch):
     API_URL = "http://localhost:5000/resumes/post"
 
     payload = {
@@ -155,44 +147,17 @@ def send_resume_to_api(resume, job):
                 "experience": resume.get("Experience", "").strip(),
                 "matching_score": float(str(job.get("Matching Score", "0")).replace("%", ""))
             }
+            for resume, job in resume_batch
         ]
     }
 
-    print("\n📤 Sending Payload to API:")
-    print(json.dumps(payload, indent=4))
+    print("\n📦 SENDING BATCH TO DB")
+    print("─────────────────────────────")
+    for r, j in resume_batch:
+        print(f"• {r.get('Name', 'Unknown')} → Job ID: {j.get('Job ID')} | Score: {j.get('Matching Score')}%")
 
     try:
-        headers = {"Content-Type": "application/json"}
-        response = requests.post(API_URL, json=payload, headers=headers)
-
-        print("API Response:", response.json())
-
-        if response.status_code == 201:
-            print(f"✅ Successfully stored resume for {resume.get('Name', 'Unknown')}")
-        else:
-            print(f"❌ API Error: {response.json()}")
-
+        response = requests.post(API_URL, json=payload, headers={"Content-Type": "application/json"})
+        print("✅ API Response:", response.json())
     except Exception as e:
-        print(f"❌ Request failed: {e}")
-
-# ✅ Main Function (Only Runs When Called Explicitly)
-def process_matching():
-    resumes = process_all_resumes()
-    jobs = fetch_all_jobs()
-
-    if not resumes:
-        print("❌ No resumes found! Exiting...")
-        return
-
-    for resume in resumes:
-        if not isinstance(resume, dict):  
-            print(f"❌ Skipping invalid resume: {resume}")
-            continue  
-     
-        print(f"📄 Checking matches for {resume.get('Name', 'Unknown Candidate')}...")
-        matched_jobs = match_resume_with_jobs(resume, jobs)
-        
-        if matched_jobs:
-            print(f"✅ Best Matched Job: {matched_jobs[0]}")
-        else:
-            print(f"❌ No Suitable Job Found for {resume.get('Name', 'Unknown')}!")
+        print("❌ Error sending batch:", e)
