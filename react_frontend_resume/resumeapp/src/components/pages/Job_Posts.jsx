@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Post from "../api/jobPost";
 
-
 import {
   Container,
   Row,
@@ -144,17 +143,18 @@ export default function Job_Posts() {
   const handleUpdateClick = (row) => {
     setSelectedDonation(row);
     setNewDonation({
-      name: row.name,
-      email: row.email,
-      phone: row.phone,
-      address: row.address,
-      amount: row.amount,
-      order_id: row.order_id,
-      payment_id: row.payment_id,
-      status: row.status,
-      payment_method: row.payment_method,
-      currency: row.currency,
-      remarks: row.remarks,
+      title: row.job_title,
+      description: row.job_description,
+      // company: row.company_name,
+      // location: row.location,
+      skills: row.required_skills,
+      experience: row.experience_required,
+      
+      // payment_id: row.payment_id,
+      // status: row.status,
+      // payment_method: row.payment_method,
+      // currency: row.currency,
+      // remarks: row.remarks,
     });
     setIsUpdate(true);
     handleModalShow();
@@ -236,10 +236,11 @@ export default function Job_Posts() {
           <Breadcrumb.Item active style={{ fontWeight: "bold" }}>  Donations </Breadcrumb.Item>
         </Breadcrumb>
       </div>
-
+      {/* const var ="Add_Jobs.jsx" */}
       <div style={{ boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 0, 0, 0.1)" }}>
           <Container fluid className="p-3">
             <p active style={{fontWeight: "bold" ,color:""}}> Donation List </p>
+            <button active style={{color:"Blue"}} className="float-end btn btn-btn-primary btn-sm"><Link to="../Add_Jobs">Add Jobs</Link></button>
             <hr />
             <Row> 
               <Col lg={12} md={6} sm={3}>
@@ -280,33 +281,33 @@ export default function Job_Posts() {
               <Row>
                 <Col>
                   <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control name="name" type="text" value={newDonation.name} onChange={handleInputChange} required/>
+                    <Form.Label>Job Title</Form.Label>
+                    <Form.Control name="job_title" type="text" value={newDonation.name} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group className="mb-3">
-                    <Form.Label>Phone</Form.Label>
-                    <Form.Control name="phone" type="text" value={newDonation.phone} onChange={handleInputChange} required/>
+                    <Form.Label>Job Description</Form.Label>
+                    <Form.Control name="job_description" type="text" value={newDonation.phone} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control name="email" type="email" value={newDonation.email} onChange={handleInputChange} required/>
+                    <Form.Label>Required Skills</Form.Label>
+                    <Form.Control name="required_skills" type="email" value={newDonation.email} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
 
                 <Col>
                   <Form.Group className="mb-3">
-                    <Form.Label>Amount</Form.Label>
-                    <Form.Control name="amount" type="number" value={newDonation.amount} onChange={handleInputChange} required/>
+                    <Form.Label>Experience Required</Form.Label>
+                    <Form.Control name="experience_required" type="number" value={newDonation.amount} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col>
                   <Form.Group className="mb-3">
                     <Form.Label>Address</Form.Label>
@@ -328,7 +329,7 @@ export default function Job_Posts() {
                     <Form.Control name="status" type="text" value={newDonation.status} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
-              </Row>
+              </Row> */}
             </Container>
             <Modal.Footer>
               <Button variant="primary" type="submit">

@@ -139,12 +139,13 @@ def send_batch_to_api(resume_batch):
     payload = {
         "resumes": [
             {
-                "name": resume.get("Name", "").strip(),
-                "email": resume.get("Email", "").strip(),
-                "phone": resume.get("Phone Number", "").strip(),
-                "skills": resume.get("Skills", []) if isinstance(resume.get("Skills", []), list) else [skill.strip() for skill in resume.get("Skills", "").split(",")],
+                "name": str(resume.get("Name", "")).strip(),
+                "email": str(resume.get("Email", "")).strip(),
+                "contact_number": str(resume.get("Phone Number", "")).strip(),
+                "skills": resume.get("Skills", []) if isinstance(resume.get("Skills", []), list)
+                        else [skill.strip() for skill in str(resume.get("Skills", "")).split(",")],
                 "job_id": int(job.get("Job ID", 0)) if str(job.get("Job ID", "")).isdigit() else 0,
-                "experience": resume.get("Experience", "").strip(),
+                "experience": str(resume.get("Experience", "")).strip(),
                 "matching_score": float(str(job.get("Matching Score", "0")).replace("%", ""))
             }
             for resume, job in resume_batch

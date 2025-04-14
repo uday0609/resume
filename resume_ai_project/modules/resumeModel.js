@@ -8,7 +8,7 @@ const resumeModel = {
         INSERT INTO selected_resume (candidate_name, email, contact_number, skills, experience, job_id, matching_score)
         VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`;
       const values = [
-        resume.candidate_name, // Consistent naming
+        resume.name, // Consistent naming
         resume.email,
         resume.contact_number,
         JSON.stringify(resume.skills),

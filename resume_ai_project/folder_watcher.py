@@ -2,7 +2,7 @@ import os
 import time
 from extract_resume import process_all_resumes
 from fetch_jobs import fetch_all_jobs
-from match_skills3 import match_resume_with_jobs, send_resume_to_api
+from match_skills3 import match_resume_with_jobs, send_batch_to_api
 
 # 📂 Resume folder and settings
 RESUME_FOLDER = "resumes"
@@ -71,15 +71,15 @@ def watch_resume_folder():
                 print(f"❌ No Suitable Job Found for {resume.get('Name', 'Unknown')}!")
 
         # ✅ Send batch if it has 10 or more resumes
-        if len(batch) >= 10:
+        if len(batch) >= 1:
             try:
-                send_resume_to_api(batch)
+                send_batch_to_api(batch)
                 print(f"📤 Sent batch of {len(batch)} resumes to API")
                 batch.clear()  # Clear batch after sending
             except Exception as e:
                 print(f"❌ Error sending batch to API: {e}")
         else:
-            print(f"🕒 Batch has only {len(batch)} resumes, waiting to complete 10.")
+            print(f"🕒 Batch has only {len(batch)} resumes, waiting to complete 1.")
 
         # Delete processed resumes
         delete_processed_resumes(processed_files)

@@ -21,7 +21,7 @@ const validateResumes = [
   body('resumes').isArray().withMessage('At least one resume must be provided'),
   body('resumes.*.name').trim().notEmpty().withMessage('Candidate name is required'),
   body('resumes.*.email').trim().isEmail().withMessage('Valid email is required'),
-  body('resumes.*.phone').trim().notEmpty().withMessage('Contact number is required'),
+  body('resumes.*.contact_number').trim().notEmpty().withMessage('Contact number is required'),
   body('resumes.*.skills').isArray().withMessage('Skills must be an array'),
   body('resumes.*.experience').trim().notEmpty().withMessage('Experience field is required'),
   body('resumes.*.job_id').isInt().withMessage('Job ID must be a number'),
@@ -34,8 +34,7 @@ const validateId = [
 ];
 
 // ✅ Create a new resume
-router.post(
-  '/post',
+router.post('/post',
   [
     (req, res, next) => {
       console.log('Received Body:', JSON.stringify(req.body, null, 2));
