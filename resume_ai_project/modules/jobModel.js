@@ -37,13 +37,13 @@ const JobModel = {
   },
 
   // Get jobs with filters (placeholder for future implementation)
-  async getJobsWithFilters() {
+  async getJobById(job_id) {
     try {
-      const query = 'SELECT * FROM job_description';
-      const result = await pool.query(query);
-      return result.rows;
+      const query = 'SELECT * FROM job_description WHERE job_id = $1';
+      const result = await pool.query(query, [job_id]);
+      return result.rows[0];
     } catch (err) {
-      console.error('Error fetching jobs with filters:', err);
+      console.error('Error fetching job by ID:', err);
       throw err;
     }
   },
