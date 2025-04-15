@@ -140,24 +140,38 @@ export default function Job_Posts() {
     setSelectedId(null);
   };
 
-  const handleUpdateClick = (row) => {
-    setSelectedDonation(row);
-    setNewDonation({
-      title: row.job_title,
-      description: row.job_description,
-      // company: row.company_name,
-      // location: row.location,
-      skills: row.required_skills,
-      experience: row.experience_required,
+  const handleUpdateClick = async(row) => {
+    try{
+      const response = await fetch(`http://localhost:5000/jobs/${row.job_id}`);
+      const data=await response.json();
+      console.log(data);
       
-      // payment_id: row.payment_id,
-      // status: row.status,
-      // payment_method: row.payment_method,
-      // currency: row.currency,
-      // remarks: row.remarks,
-    });
-    setIsUpdate(true);
-    handleModalShow();
+      setSelectedDonation(data);
+      setNewDonation({
+        title: data.job_title,
+        description: data.job_description,
+        skills: data.required_skills,
+        experience: data.experience_required,      
+        
+        // title: row.job_title,
+        // description: row.job_description,
+        // // company: row.company_name,
+        // // location: row.location,
+        // skills: row.required_skills,
+        // experience: row.experience_required,
+        
+        // payment_id: row.payment_id,
+        // status: row.status,
+        // payment_method: row.payment_method,
+        // currency: row.currency,
+        // remarks: row.remarks,
+      });
+      setIsUpdate(true);
+      handleModalShow();
+    }
+    catch(error){
+      console.error("Error fetching job details:", error)
+    }
   };
 
   const columns = [
@@ -173,8 +187,8 @@ export default function Job_Posts() {
     },
     { name: <b>Title</b>, selector: (row) => row.job_title, sortable: true },
     { name: <b>Descipition</b>, selector: (row) => row.job_description, sortable: true },
-    // { name: <b>Skills</b>, selector: (row) => row.skills, sortable: true },
-    // { name: <b>Experience</b>, selector: (row) => row.exprences, sortable: true },
+    // { name: <b>Skills</b>, selector: (row) => row.required_skills, sortable: true },
+    // { name: <b>Experience</b>, selector: (row) => row.experiences, sortable: true },
     { name: <b>Company</b>, selector: (row) => row.company_name, sortable: true },
     {
       name: <b>Actions</b>,
@@ -282,13 +296,13 @@ export default function Job_Posts() {
                 <Col>
                   <Form.Group className="mb-3">
                     <Form.Label>Job Title</Form.Label>
-                    <Form.Control name="job_title" type="text" value={newDonation.name} onChange={handleInputChange} required/>
+                    <Form.Control name="job_title" type="text" value={newDonation.job_title} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group className="mb-3">
                     <Form.Label>Job Description</Form.Label>
-                    <Form.Control name="job_description" type="text" value={newDonation.phone} onChange={handleInputChange} required/>
+                    <Form.Control name="job_description" type="text" value={newDonation.job_description} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
               </Row>
@@ -296,14 +310,14 @@ export default function Job_Posts() {
                 <Col>
                   <Form.Group className="mb-3">
                     <Form.Label>Required Skills</Form.Label>
-                    <Form.Control name="required_skills" type="email" value={newDonation.email} onChange={handleInputChange} required/>
+                    <Form.Control name="required_skills" type="email" value={newDonation.required_skills} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
 
                 <Col>
                   <Form.Group className="mb-3">
                     <Form.Label>Experience Required</Form.Label>
-                    <Form.Control name="experience_required" type="number" value={newDonation.amount} onChange={handleInputChange} required/>
+                    <Form.Control name="experience_required" type="number" value={newDonation.experience_required} onChange={handleInputChange} required/>
                   </Form.Group>
                 </Col>
               </Row>
