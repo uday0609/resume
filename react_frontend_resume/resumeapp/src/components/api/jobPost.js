@@ -65,5 +65,5 @@ module.exports ={
     Add_Jobs_Description,
     getJobById,
     updateJobDescriptions,
-    deleteJobDescription
+    deleteJobDescription,
 }
