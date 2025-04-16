@@ -10,19 +10,38 @@
 .job-form-container {
   width: 500px;
   margin: 30px auto;
-  padding: 25px; /* Increased padding */
-  border-radius: 15px; /* Adjusted border radius */
-  background: #f9f9f9; /* Changed background color */
+  padding: 25px;
+  border-radius: 15px;
+  background: #f9f9f9;
   box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.15);
   text-align: center;
+
+  /* Grid layout structure */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 20px;
 }
 
 /* Form Title */
 .form-title {
-  font-size: 22px; /* Increased font size */
+  font-size: 22px;
   font-weight: bold;
-  color: #222; /* Darkened color */
-  margin-bottom: 20px; /* Adjusted margin */
+  color: #222;
+  margin-bottom: 20px;
+}
+
+/* Grid Layout for Form Groups */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Form Group */
@@ -31,12 +50,12 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 20px; /* Increased spacing */
+  margin-bottom: 20px;
 }
 
 .form-group label {
   font-weight: bold;
-  margin-bottom: 8px; /* Adjusted margin */
+  margin-bottom: 8px;
   color: #333;
 }
 
@@ -45,12 +64,12 @@
 .form-group select {
   margin-top: 12px;
   width: 100%;
-  max-width: 850px; /* Increased max width */
-  padding: 12px; /* Increased padding */
-  border: 2px solid #bbb; /* Darker border */
-  border-radius: 10px; /* Adjusted border radius */
-  font-size: 15px; /* Slightly larger font */
-  background-color: #e6f7ff; /* Light blue background */
+  max-width: 850px;
+  padding: 12px;
+  border: 2px solid #bbb;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #e6f7ff;
   color: black;
   text-align: center;
   transition: 0.3s ease-in-out;
@@ -69,17 +88,17 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  gap: 12px; /* Adjusted gap */
+  gap: 12px;
 }
 
 .skills-input {
   width: 100%;
-  max-width: 400px; /* Adjusted width */
-  padding: 12px; /* Increased padding */
+  max-width: 400px;
+  padding: 12px;
   border: 2px solid #bbb;
   border-radius: 10px;
   font-size: 15px;
-  background-color: #cdebf6; /* Changed background color */
+  background-color: #cdebf6;
   color: black;
   text-align: center;
 }
@@ -88,10 +107,10 @@
   background-color: #0056b3;
   color: white;
   border: none;
-  padding: 14px; /* Increased padding */
-  border-radius: 12%; /* Adjusted shape */
+  padding: 14px;
+  border-radius: 12%;
   cursor: pointer;
-  font-size: 20px; /* Increased font size */
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,49 +121,13 @@
   background-color: #003d80;
 }
 
-/* Experience Optional Field */
-.experience-field {
-  width: 95%; /* Increased width */
-  max-width: 450px;
-  padding: 14px; /* Increased padding */
-  border: 2px solid #bbb;
-  border-radius: 10px;
-  font-size: 15px;
-  background-color: #f8f8f8;
-  text-align: center;
-}
-
-/* Buttons */
-.add-btn,
-.submit-btn {
-  width: 95%;
-  max-width: 450px; /* Adjusted width */
-  padding: 14px;
-  font-size: 15px;
-  font-weight: bold;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.add-btn {
-  background-color: white;
-  color: #0056b3;
-  border: 2px solid #0056b3;
-}
-
-.add-btn:hover {
-  background-color: #0056b3;
-  color: white;
-}
-
+/* Skills Box in Grid */
 .skills-box {
-  display: flex;
-  flex-wrap: wrap;
-  min-height: 55px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
   padding: 10px;
   background: white;
-  min-height: 55px;
   align-items: center;
 }
 
@@ -153,10 +136,9 @@
   display: flex;
   align-items: center;
   background: #0056b3;
-  padding: 10px;
+  padding: 10px 14px;
   margin: 10px;
   color: white;
-  padding: 10px 14px;
   border-radius: 20px;
   font-size: 15px;
   font-weight: bold;
@@ -180,8 +162,54 @@
   color: #ff3333;
 }
 
+/* Experience Optional Field */
+.experience-field {
+  width: 95%;
+  max-width: 450px;
+  padding: 14px;
+  border: 2px solid #bbb;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #f8f8f8;
+  text-align: center;
+}
+
+/* Button Grid Layout */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  width: 100%;
+  max-width: 450px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+/* Buttons */
+.add-btn,
 .submit-btn {
-  background-color: #0095d8; /* Changed color */
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-btn {
+  background-color: white;
+  color: #0056b3;
+  border: 2px solid #0056b3;
+}
+
+.add-btn:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.submit-btn {
+  background-color: #0095d8;
   color: white;
   border: none;
 }
@@ -194,7 +222,7 @@
 @media screen and (max-width: 480px) {
   .job-form-container {
     width: 100%;
-    padding: 15px; /* Adjusted padding */
+    padding: 15px;
   }
 
   .form-group input,

@@ -81,8 +81,14 @@ router.put('/:job_id', [
     return res.status(400).json({ error: 'Validation Failed', messages: errorMessages });
   }
 
-  const { job_id } = req.params;
+  let { job_id } = req.params;
+  job_id = parseInt(job_id);  // Ensure job_id is an integer
   const { job_title, job_description, required_skills, experience_required, company_name, location } = req.body;
+
+  if (isNaN(job_id)) {
+    return res.status(400).json({ error: 'Invalid job ID' });
+  }
+
   try {
     const job = await JobModel.updateJob(
       job_id,
@@ -93,7 +99,9 @@ router.put('/:job_id', [
       company_name,
       location
     );
+
     if (!job) return res.status(404).json({ error: 'Job not found' });
+
     res.status(200).json(job);
   } catch (err) {
     res.status(500).json({ error: 'Error updating job description.', details: err.message });
