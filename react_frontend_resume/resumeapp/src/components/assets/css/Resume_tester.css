@@ -1,0 +1,285 @@
+.mainbox {
+    height:27rem;
+    width:27rem;
+/*  border:2px solid black;*/
+    border-radius: 100%;
+    overflow: hidden;
+    position: relative;
+} 
+.InfoImageSection_scannerLineContainer__mkYZX {
+    width: 27rem;
+    height:27rem;
+    border-radius: 100%;
+    position: absolute;
+    top: 1.4%;
+    left: 0.3%;
+    z-index: 2;
+    overflow: hidden;
+    /* border:2px solid black; */
+}
+@media screen and (max-width :390px){
+    .mainbox{
+        width: 22rem;
+        height:22rem;
+    }
+    .InfoImageSection_scannerLineContainer__mkYZX {
+        width: 22rem;
+        height:22rem;
+    }
+}
+.InfoImageSection_scannerLineImage__LqUX7 {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 1;
+    transform: scaleY(1);
+    transition: transform .8s;
+    animation: InfoImageSection_scanner-line-movement__CsLQe 8s infinite;
+}
+@keyframes InfoImageSection_scanner-line-movement__CsLQe{
+    0%{
+       top: 0;
+    }
+    50%{
+        top: 90%;
+        transform: scaleY(-1);
+    }
+    100%{
+         top: 0;
+
+    }
+}
+/* form */
+.inputstyle{
+  border: 1px solid #1481f5;
+  
+  background-color: #a8d2fc57;
+  text-align: center;
+}
+.inputstyle:focus{
+  outline: none!important;
+}
+/* Modal styling */
+.modal-content {
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header styling */
+  .modal-header {
+    border-bottom: none;
+    text-align: center;
+  }
+  
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #007bff; /* Bootstrap primary color */
+  }
+  
+  /* Form styling */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Input and select styling */
+  input,
+  textarea,
+  select,
+  button {
+    /* width: 100%; */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #007bff; /* Focus border color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Light blue glow effect */
+  }
+  
+  /* Button styling */
+  button {
+    /* padding: 12px 20px; */
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:active {
+    background-color: #004085;
+  }
+  
+  button.primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  button.primary:hover {
+    background-color: #0056b3;
+  }
+  
+  button.secondary {
+    background-color: #f8f9fa;
+    border: 1px solid #007bff;
+    color: #007bff;
+  }
+  
+  button.secondary:hover {
+    background-color: #e2e6ea;
+  }
+  .uploadbutton{
+    display: block;
+    padding:10px 20px;
+    background-color: #007bff;
+    color:white;
+    border:none;
+    border-radius: 5px;
+    cursor:pointer;
+    margin-top:5px;
+  }
+  .uploadbutton:hover{
+    background-color: #0056b3;
+  }
+  .hidden{
+    display:none;
+  }
+  /* Skills list styling */
+  /* .skills-list {
+    margin-top: 15px;
+  }
+   */
+   .skills-input {
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 20px; */
+  }
+  
+  .skills-input input {
+    flex-grow: 1;  /* This will make the input field take the full available width */
+    padding: 8px;
+    border-radius: 5px;
+    /* border: 1px solid #ccc; */
+    /* font-size: 0.6rem; */
+  }
+  
+  .skills-input button {
+    background-color: #007fbf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 11px;
+    margin-left: 2px;
+    font-size: 0.7rem;
+    cursor: pointer;
+  }
+  
+  .skills-input button:hover {
+    background-color: #0056b3;
+    transition: background-color 0.3s ease;
+  }
+  
+  .skills-input button:active {
+    background-color: #004085;
+  }
+  
+  /* Add plus sign inside the button */
+  .skills-input button .plus-icon {
+    font-size: 1.3rem;
+    margin-right: 3px;
+  }
+  
+  /* Error message styling */
+  .text-danger {
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 600px) {
+    .modal-content {
+      padding: 20px;
+    }
+  
+    .modal-title {
+      font-size: 1.2rem;
+    }
+  
+    button {
+      font-size: 0.9rem;
+      padding: 10px 15px;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .modal-content {
+      padding: 10px;
+    }
+  
+    .skills-input {
+      flex-direction: column;
+    }
+  
+    .skills-input input {
+      margin-bottom: 10px;
+    }
+  
+    .skills-list li {
+      padding: 5px;
+    }
+  }
+  /* Style the container of skills */
+.skills-list {
+  padding: 15px;
+  border: 1px solid #007bff; /* Primary blue border around the box */
+  border-radius: 10px; /* Rounded corners */
+  background-color: #f8f9fa; /* Light background color */
+  max-width: 100%; /* Make sure it fits in the container */
+  margin-top: 5px;
+  font-size: 14px; /* Font size for skills */
+}
+
+/* Style the comma-separated values inside the div */
+.skills-list .skills-box {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap */
+  gap: 2px; /* Space between skills */
+  font-weight: 600; /* Bold text */
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Each skill as an individual item with its own border */
+.skills-list .skills-box .skill-item {
+  /* background-color: #007bff; Primary blue background */
+  /* color: white; White text */
+  padding: 2px 5px; /* Padding for each skill item */
+  border-radius: 20px; /* Rounded edges for each skill */
+  font-size: 14px; /* Slightly smaller font for better presentation */
+  margin-bottom: 2px; /* Space between skill items */
+  display: inline-flex; /* Inline-block like appearance */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect on skill items */
+.skills-list .skills-box .skill-item:hover {
+  /* background-color: #0056b3; Darker blue on hover */
+  cursor: pointer;
+}
+
+/* Style the commas */
+.skills-list .skills-box .comma {
+  color: #007bff; /* Use primary blue color for commas */
+  padding: 0 5px; /* Padding around the commas */
+  font-weight: bold; /* Make commas stand out */
+}
+

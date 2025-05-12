@@ -1,0 +1,240 @@
+/* Reset Defaults */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}
+
+/* Job Form Container */
+.job-form-container {
+  width: 500px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 15px;
+  background: #f9f9f9;
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+
+  /* Grid layout structure */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 20px;
+}
+
+/* Form Title */
+.form-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+/* Grid Layout for Form Groups */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Form Group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Input Fields & Dropdown */
+.form-group input,
+.form-group select {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 850px;
+  padding: 12px;
+  border: 2px solid #bbb;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #e6f7ff;
+  color: black;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0056b3;
+  box-shadow: 0px 0px 6px rgba(0, 86, 179, 0.5);
+  outline: none;
+}
+
+/* Required Skills Section */
+.skill-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.skills-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  border: 2px solid #bbb;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #cdebf6;
+  color: black;
+  text-align: center;
+}
+
+.add-skill-btn {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12%;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.add-skill-btn:hover {
+  background-color: #003d80;
+}
+
+/* Skills Box in Grid */
+.skills-box {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  padding: 10px;
+  background: white;
+  align-items: center;
+}
+
+/* Individual Skill Tag */
+.skill-tag {
+  display: flex;
+  align-items: center;
+  background: #0056b3;
+  padding: 10px 14px;
+  margin: 10px;
+  color: white;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+/* Remove Button (X) */
+.remove-skill {
+  background: none;
+  border: none;
+  color: white;
+  margin-left: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.remove-skill:hover {
+  color: #ff3333;
+}
+
+/* Experience Optional Field */
+.experience-field {
+  width: 95%;
+  max-width: 450px;
+  padding: 14px;
+  border: 2px solid #bbb;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #f8f8f8;
+  text-align: center;
+}
+
+/* Button Grid Layout */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  width: 100%;
+  max-width: 450px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+/* Buttons */
+.add-btn,
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-btn {
+  background-color: white;
+  color: #0056b3;
+  border: 2px solid #0056b3;
+}
+
+.add-btn:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.submit-btn {
+  background-color: #0095d8;
+  color: white;
+  border: none;
+}
+
+.submit-btn:hover {
+  background-color: #0073a8;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 480px) {
+  .job-form-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .skills-input,
+  .add-btn,
+  .submit-btn {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .skills-box {
+    justify-content: center;
+  }
+}
