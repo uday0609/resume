@@ -17,7 +17,7 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Validation middleware for resumes
-const validateResumes = [
+const validateResumes = [ 
   body('resumes').isArray().withMessage('At least one resume must be provided'),
   body('resumes.*.name').trim().notEmpty().withMessage('Candidate name is required'),
   body('resumes.*.email').trim().isEmail().withMessage('Valid email is required'),

@@ -66,10 +66,10 @@ const JobForm = () => {
           <div className="skill-input-container">
             <input
               type="text"
-              name="requiredSkills"
               value={formData.requiredSkills}
+              name="requiredSkills"
               onChange={handleChange}
-            />
+              />
             <button type="button" className="add-skill-btn" onClick={addSkill} aria-label="Add skill">
               <Plus size={16} />
             </button>

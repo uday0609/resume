@@ -120,7 +120,7 @@ const Add_Jobs = () => {
           value={formData.requiredSkills}
           onChange={handleChange}
           addSkill={addSkill}
-          removeSkill={removeSkill}
+          removeSkill={removeSkill} 
         />
 
         <FormField label={<><User size={18} /> Experience (Optional)</>} type="text" name="experience" value={formData.experience} onChange={handleChange} />
