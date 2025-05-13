@@ -572,6 +572,7 @@ export default function Job_Posts() {
              </Container>
             </Modal.Body>
         </Modal>
+        
 
       <ToastContainer />
     </Container>

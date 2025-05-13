@@ -66,9 +66,9 @@ export default function Job_Posts() {
     setSelectedJob(null);
   };
 
-  const handleModalShow = () => {
-    setShowModal(true);
-  };
+  // const handleModalShow = () => {
+  //   setShowModal(true);
+  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
