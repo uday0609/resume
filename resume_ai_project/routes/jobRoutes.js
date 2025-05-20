@@ -1,15 +1,19 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const JobModel = require('../modules/jobModel');  // ✅ Ensure correct path
+const JobModel = require('../modules/jobModel'); 
 const router = express.Router();
 
 router.post('/create', [
   body('jobTitle').notEmpty().withMessage('Job title is required'),
   body('jobDescription').notEmpty().withMessage('Job description is required'),
   body('requiredSkills').notEmpty().withMessage('Required skills are required'),
-  body('experience').notEmpty().withMessage('Experience required is required'),
+  body('experience'),
   body('companyName').notEmpty().withMessage('Company name is required'),
-  body('jobLocation').notEmpty().withMessage('Job location is required')
+  body('jobLocation').notEmpty().withMessage('Job location is required'),
+  body('jobType').notEmpty().withMessage('Job Type is required'),
+  body('applicationDeadline'),
+  body('openings').notEmpty().withMessage('Number of openings is required'),
+  body('maxApplications').notEmpty().withMessage('Maximum application field is required')  
 ], async (req, res) => {
   console.log("REQ.BODY:", req.body);
 
@@ -25,7 +29,11 @@ router.post('/create', [
     requiredSkills,
     experience,
     companyName,
-    jobLocation
+    jobLocation,
+    jobType,
+    applicationDeadline,
+    openings,
+    maxApplications
   } = req.body;
 
   try {
@@ -35,7 +43,11 @@ router.post('/create', [
       requiredSkills,
       experience,
       companyName,
-      jobLocation
+      jobLocation,
+      jobType,
+      applicationDeadline,
+      openings,
+      maxApplications
     );
     res.status(201).json(job);
   } catch (err) {
@@ -71,9 +83,13 @@ router.put('/:job_id', [
   body('job_title').notEmpty().withMessage('Job title is required'),
   body('job_description').notEmpty().withMessage('Job description is required'),
   body('required_skills').notEmpty().withMessage('Required skills are required'),
-  body('experience_required').notEmpty().withMessage('Experience required is required'),
+  body('experience_required'),
   body('company_name').notEmpty().withMessage('Company name is required'),
-  body('location').notEmpty().withMessage('Location is required')
+  body('location').notEmpty().withMessage('Location is required'),
+  body('type').notEmpty().withMessage('Job Type is required'),
+  body('deadline'),
+  body('openings').notEmpty().withMessage('Number of openings is required'),
+  body('maxApplications').notEmpty().withMessage('Maximum application field is required')  
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -83,7 +99,7 @@ router.put('/:job_id', [
 
   let { job_id } = req.params;
   job_id = parseInt(job_id);  // Ensure job_id is an integer
-  const { job_title, job_description, required_skills, experience_required, company_name, location } = req.body;
+  const { job_title, job_description, required_skills, experience_required, company_name, location,type,deadline,openings,maxApplications } = req.body;
 
   if (isNaN(job_id)) {
     return res.status(400).json({ error: 'Invalid job ID' });
@@ -97,7 +113,11 @@ router.put('/:job_id', [
       required_skills,
       experience_required,
       company_name,
-      location
+      location,
+      type,
+      deadline,
+      openings,
+      maxApplications
     );
 
     if (!job) return res.status(404).json({ error: 'Job not found' });

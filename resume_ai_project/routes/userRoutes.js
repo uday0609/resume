@@ -1,7 +1,6 @@
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const UserModel = require('../modules/userModel');
-
 const router = express.Router();
 
 // Middleware for handling validation errors
@@ -14,9 +13,7 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // ✅ Create a new user (Signup)
-router.post(
-  '/signup',
-  [
+router.post('/signup',[
     body('username').trim().notEmpty().withMessage('Username is required'),
     body('email').trim().isEmail().withMessage('Email is invalid'),
     body('password')
@@ -31,7 +28,6 @@ router.post(
       if (existingUser) {
         return res.status(409).json({ error: 'Email is already registered.' });
       }
-
       const user = await UserModel.registerUser(username, email, password);
       res.status(201).json({ message: 'User registered successfully.', user });
     } catch (err) {
@@ -42,9 +38,7 @@ router.post(
 );
 
 // ✅ Login user
-router.post(
-  '/login',
-  [
+router.post('/login',[
     body('email').trim().isEmail().withMessage('Email is invalid'),
     body('password').notEmpty().withMessage('Password is required'),
   ],
@@ -56,7 +50,6 @@ router.post(
       if (!user) {
         return res.status(401).json({ error: 'Invalid email or password.' });
       }
-
       res.status(200).json({ message: 'Login successful.', user });
     } catch (err) {
       console.error('Error logging in user:', err);
@@ -77,9 +70,7 @@ router.get('/', async (req, res) => {
 });
 
 // ✅ Get user by ID
-router.get(
-  '/:user_id',
-  [param('user_id').isInt().withMessage('Invalid user ID format.')],
+router.get('/:user_id',[param('user_id').isInt().withMessage('Invalid user ID format.')],
   handleValidationErrors,
   async (req, res) => {
     const { user_id } = req.params;
@@ -97,9 +88,7 @@ router.get(
 );
 
 // ✅ Update user details
-router.put(
-  '/:user_id',
-  [
+router.put('/:user_id',[
     param('user_id').isInt().withMessage('Invalid user ID format.'),
     body('username').trim().notEmpty().withMessage('Username is required'),
     body('email').trim().isEmail().withMessage('Email is invalid'),
@@ -122,9 +111,8 @@ router.put(
 );
 
 // ✅ Delete user
-router.delete(
-  '/:user_id',
-  [param('user_id').isInt().withMessage('Invalid user ID format.')],
+router.delete('/:user_id',[
+  param('user_id').isInt().withMessage('Invalid user ID format.')],
   handleValidationErrors,
   async (req, res) => {
     const { user_id } = req.params;

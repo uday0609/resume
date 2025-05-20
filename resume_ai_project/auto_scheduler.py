@@ -16,7 +16,6 @@ def start_resume_watcher():
     watch_resume_folder()
 
 if __name__ == "__main__":
-    # For testing, run every 10 seconds
     schedule.every(5).minutes.do(job_fetch_emails)
 
     watcher_thread = threading.Thread(target=start_resume_watcher)

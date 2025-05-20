@@ -2,19 +2,18 @@ const pool = require('../config/db');
 
 const JobModel = {
   
-  async createJob(jobTitle, jobDescription, requiredSkills, experience, companyName, jobLocation) {
+  async createJob(jobTitle, jobDescription, requiredSkills, experience, companyName, jobLocation,jobType,applicationDeadline,openings,maxApplications) {
     try {
       const query = `
         INSERT INTO job_description 
-        (job_title, job_description, required_skills, experience_required, company_name, location) 
-        VALUES ($1, $2, $3, $4, $5, $6)
+        (job_title, job_description, required_skills, experience_required, company_name, location,job_type,application_deadline,openings,max_applications) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         RETURNING *;
       `;
 
-      const values = [jobTitle, jobDescription, requiredSkills, experience, companyName, jobLocation];
+      const values = [jobTitle, jobDescription, requiredSkills, experience, companyName, jobLocation,jobType,applicationDeadline,openings,maxApplications];
 
       console.log("VALUES TO INSERT:", values);
-
       const result = await pool.query(query, values);
       return result.rows[0];
     } catch (err) {
@@ -76,5 +75,4 @@ const JobModel = {
     }
   },
 };
-
 module.exports = JobModel;
