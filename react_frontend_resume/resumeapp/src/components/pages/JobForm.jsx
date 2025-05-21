@@ -3,9 +3,12 @@ import {
   Briefcase, FileText, Code, User, Building, Users, ClipboardList, Calendar, Plus, X 
 } from "lucide-react"; 
 import FormField from "./FormField";
-import "./JobForm.css";
-
+import "../assets/css/JobForm.css";
+import Post from "../api/jobPost";
+import { useNavigate } from "react-router-dom";
 const JobForm = () => {
+    const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     jobTitle: "",
     jobDescription: "",
@@ -44,14 +47,20 @@ const JobForm = () => {
     setSkills(skills.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const cleanedData = Object.fromEntries(
-      Object.entries(formData).map(([key, value]) => [key, value.trim()])
-    );
-    console.log("Submitted Data:", { ...cleanedData, skills });
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      const cleanedData = Object.fromEntries(
+        Object.entries(formData).map(([key, value]) => [key, value?value.trim():value])
+      );
+      console.log("Submitted Data:", { ...cleanedData, requiredSkills:skills });
+      console.log(cleanedData)
+  
+      let sent = await Post.Add_Jobs_Description({ ...cleanedData, requiredSkills:skills })
+      navigate("/admin/Jobs"); 
+    };
+  const handleCancel = () => {
+    navigate("/admin/Jobs"); 
   };
-
   return (
     <div className="job-form-container">
       <h2 className="form-title">Post a Job</h2>
@@ -118,6 +127,9 @@ const JobForm = () => {
         <FormField label={<><Calendar size={18} /> Application Deadline (Optional)</>} type="date" name="applicationDeadline" value={formData.applicationDeadline} onChange={handleChange} />
 
         <button type="submit" className="submit-btn">Submit</button>
+         <button type="button" className="cancel-btn" onClick={handleCancel}>
+          Cancel
+        </button>
       </form>
     </div>
   );

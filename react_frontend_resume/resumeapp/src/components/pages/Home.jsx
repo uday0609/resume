@@ -3,7 +3,7 @@ import intro from '../assets/images/intro.png';
 import intro2 from '../assets/images/intro2.jpg'; 
 import Image from 'react-bootstrap/Image';
 import '../assets/css/Home.css';
-
+import resumes from '../assets/images/resumes.png';
 import { startTypewriterEffect } from "../pages/Typewrite.js"; // Import the typewriter logic
 import React, { useEffect,useRef } from 'react';
 const  Home = ()=>{
@@ -15,10 +15,8 @@ const  Home = ()=>{
     //     script.onload = () => {
     //       console.log('Script loaded successfully!');
     //     };
-    
     //     // Append the script to the body
     //     document.body.appendChild(script);
-    
     //     // Clean up by removing the script when the component unmounts
     //     // return () => {
     //     //   document.body.removeChild(script);
@@ -43,32 +41,35 @@ const  Home = ()=>{
     return (
         <Container fluid className="bg">
             <Row className="base1">
-                <Col lg={12} className="mt-lg-5 pt-lg-5   mt-4 pt-4  d-flex flex-column  justify-content-center align-items-center">
+                <Col md={6} data-aos="fade-up-right" className="mt-lg-2 pt-lg-0   mt-3 pt-4  d-flex flex-column  justify-content-center align-items-center">
                     <h2 className=" fw-bold  p-1  mt-4  d-flex align-item-center justify-content-center">Your Next Job Starts Here</h2>
                     <div className="w-full h-full cont display-4 d-flex justify-center items-center" style={{display: "flex",justifycontent: "center",alignitems: "center"}}>
                        {/* <h1 id="typewriter" className="text-4xl display-4 " style={{color:"#389ae0"}}>Upload,optimize,get hired! </h1> */}
-                       <h1 ref={typewriterRef} className="text-4xl display-4 " style={{color:"#389ae0"}} id="typewriter"></h1>
+                       <h1 ref={typewriterRef} className="text-4xl display-4 fw-bold" style={{color:"#389ae0",height:'90px'}} id="typewriter"></h1>
                     </div>
     
                     <h3 className="mt-2 fs-4   text-center d-flex justify-content-center  ">"Let us help you craft the perfect resume and match it with top job opportunities." </h3>
                     <h3 className="fs-4 justify-content-center text-center "> It's time to land your dream job.</h3>
-                    <div className="d-flex  justify-content-center flex-wrap flex-lg-nowrap  p-lg-2 p-1 gap-3 gap-md-5 mt-lg-1  ">
-                        <button /*style={{borderRadius:'10%'}}*/ className='admin1 p-lg-2 p-1 mt-2 fs-5'>
+                    <div className="d-flex  justify-content-center flex-wrap flex-lg-nowrap  p-lg-2 p-1 gap-3  mt-lg-1  ">
+                        <button /*style={{borderRadius:'10%'}}*/ className='uploadbtn p-lg-2 p-1 mt-2 fs-5'>
                             <a href='#upload' style={{textDecoration:'none'}}><i className="bi bi-file-earmark-arrow-up-fill"></i> Upload Resume</a>
                         </button>
-                        <button /*style={{borderRadius:'10%'}}*/ className='admin1 p-lg-2 p-1 mt-2 fs-5'>
+                        <button /*style={{borderRadius:'10%'}}*/ className='admin1  p-lg-2 p-1 mt-2 fs-5'>
                             <a href='#test' style={{textDecoration:'none'}}><i className="bi bi-journal-check"></i> Test Resume</a>
                         </button>
                     </div>
                 </Col>
+                <Col md={6} data-aos="zoom-in" className="p-lg-5 pt-5">
+                  <Image src={resumes} rounded  fluid className="try"/>
+                </Col>
             </Row>
         
             <Row className="mt-lg-5  p-2 d-flex ">
-                <Col lg={6} className="p-lg-5">
-                  <Image src={intro} rounded  fluid/>
+                <Col md={6}  data-aos="fade-up" data-aos-delay="190" className="p-lg-5 pt-5 pb-2 align-items-center">
+                  <Image src={intro} rounded  fluid />
                 </Col>
                 
-                <Col lg={6} className="d-flex justify-content-center align-item-center">
+                <Col md={6} data-aos="fade-up"  data-aos-delay="190" className="d-flex justify-content-center align-item-center">
                     <div className="text-center mt-lg-5 pt-lg-4 ">
                         <h4  style={{color:"#389ae0"}} className="display-6 fw-bold pt-2"> "Resumes refined, careers defined."</h4>
                          <h5 className=" fw-light  p-2 mt-1 ">To empower job seekers by crafting optimized resumes and thoroughly 
@@ -78,7 +79,7 @@ const  Home = ()=>{
                     </div>
                 </Col>
             </Row>
-            <Row className="mt-lg-2  p-2 d-flex "> 
+            {/* <Row className="mt-lg-2  p-2 d-flex "> 
                 <Col lg={6} className=" order-sm-2 d-flex justify-content-center align-item-center">
                     <div className="text-center mt-lg-5 pt-lg-4 ">
                         <h4  style={{color:"#389ae0"}} className="display-6 fw-bold pt-2">Perfect resumes, proven results.</h4>
@@ -93,7 +94,7 @@ const  Home = ()=>{
                 <Col lg={6} className=" order-sm-1 p-lg-5">
                   <Image src={intro2} rounded  fluid />
                 </Col>
-            </Row>
+            </Row> */}
             {/* <Helmet> */}
 
         </Container>

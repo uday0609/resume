@@ -13,13 +13,15 @@ import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEdit, FaTrashAlt, FaCaretRight, FaPlusCircle } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaSearch, FaCaretRight, FaPlusCircle } from "react-icons/fa";
 import {
   Briefcase, FileText, Code, User, Building, Users, ClipboardList, Calendar, Plus, X
 } from "lucide-react";
 import FormField from "./FormField";
-import "../assets/css/JobForm.css";
+// import "../assets/css/JobForm.css";
+import JobForm from './JobForm.jsx'
 import Post from "../api/jobPost";
+import { useNavigate } from "react-router-dom";
 export default function Job_Posts() {
   const [showAlert, setShowAlert] = useState(false);
   const [fullscreen, setFullscreen] = useState(true);
@@ -39,58 +41,70 @@ export default function Job_Posts() {
   const [deleteModel, setDeleteModel] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [show1, setLgShow1] = useState(false);
-  const handleClose1 = () => setLgShow1(false);
-  const handleShow1 = () => setLgShow1(true);
-    const [formData, setFormData] = useState({
-      jobTitle: "",
-      jobDescription: "",
-      requiredSkills: "",
-      experience: "",
-      jobType: "",
-      jobLocation: "",
-      companyName: "",
-      numberOfOpenings: "",
-      maxApplications: "",
-      applicationDeadline: "",
-    });
-  
-    const [skills, setSkills] = useState([]);
-  
-    const handleChange = (e) => {
-      let { name, value } = e.target;
-  
-      // Prevent negative numbers
-      if (["numberOfOpenings", "maxApplications"].includes(name) && value < 0) {
-        value = 0;
-      }
-  
-      setFormData({ ...formData, [name]: value });
-    };
-  
-    const addSkill = () => {
-      const newSkill = formData.requiredSkills.trim();
-      if (newSkill !== "" && !skills.includes(newSkill)) {
-        setSkills([...skills, newSkill]);
-        setFormData({ ...formData, requiredSkills: "" });
-      }
-    };
-  
-    const removeSkill = (index) => {
-      setSkills(skills.filter((_, i) => i !== index));
-    };
-  
-    const handleSubmit1 = async (e) => {
-      e.preventDefault();
-      const cleanedData = Object.fromEntries(
-        Object.entries(formData).map(([key, value]) => [key, value.trim()])
-      );
-      console.log("Submitted Data:", { ...cleanedData, skills });
-      console.log(cleanedData)
-  
-      let sent = await Post.Add_Jobs_Description(cleanedData)
-    };
-  
-  
+  const navigate = useNavigate();
+
+  // const handleClose1 = () => setLgShow1(false);
+  // const handleShow1 = () => setLgShow1(true);
+   const [showJobForm, setShowJobForm] = useState(false);
+
+  const handleShow1 = () => {
+    navigate("/admin/add_job");
+
+  };
+
+  const handleCloseForm = () => {
+    setShowJobForm(false);
+  };
+  const [formData, setFormData] = useState({
+    jobTitle: "",
+    jobDescription: "",
+    requiredSkills: "",
+    experience: "",
+    jobType: "",
+    jobLocation: "",
+    companyName: "",
+    numberOfOpenings: "",
+    maxApplications: "",
+    applicationDeadline: "",
+  });
+
+  const [skills, setSkills] = useState([]);
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+
+    // Prevent negative numbers
+    if (["numberOfOpenings", "maxApplications"].includes(name) && value < 0) {
+      value = 0;
+    }
+
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const addSkill = () => {
+    const newSkill = formData.requiredSkills.trim();
+    if (newSkill !== "" && !skills.includes(newSkill)) {
+      setSkills([...skills, newSkill]);
+      setFormData({ ...formData, requiredSkills: "" });
+    }
+  };
+
+  const removeSkill = (index) => {
+    setSkills(skills.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit1 = async (e) => {
+    e.preventDefault();
+    const cleanedData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) => [key, value.trim()])
+    );
+    console.log("Submitted Data:", { ...cleanedData, skills });
+    console.log(cleanedData)
+
+    let sent = await Post.Add_Jobs_Description(cleanedData)
+  };
+
+
 
   useEffect(() => {
     handleGetData();
@@ -105,7 +119,6 @@ export default function Job_Posts() {
       console.error("Error fetching job posts:", error);
     }
   };
-
   const handleModalClose = () => {
     setShowModal(false);
     setNewJob({
@@ -220,7 +233,8 @@ export default function Job_Posts() {
     },
     headCells: {
       style: {
-        background: "linear-gradient(rgb(71 71 86), rgb(22, 33, 62))",
+        background: " #389ae0",
+        // background: "linear-gradient(rgb(71 71 86), rgb(22, 33, 62))",
         color: "white",
       },
     },
@@ -237,7 +251,7 @@ export default function Job_Posts() {
   };
 
   return (
-    <Container className="container-fluid  pt-5 mt-5">
+    <Container className="container-fluid  pt-3 mt-2">
       {showAlert && (
         <div className="alert alert-warning alert-dismissible fade show" role="alert">
           <strong>Record was not deleted.</strong>
@@ -265,19 +279,23 @@ export default function Job_Posts() {
           <Row>
             <Col lg={12} md={6} sm={3}>
               <div className="d-flex justify-content-between mb-3">
-                <input id="search" type="text" placeholder="Search..."
-                  style={{ borderRadius: "10px", border: "none", padding: "0px 6px" }}
-                  value={filterText}
-                  onChange={(e) => setFilterText(e.target.value)}
-                />
+                <div>
+                  <FaSearch className="me-2" />
+                  <input id="search" type="text" placeholder="Search..."
+                    style={{ borderRadius: "10px", border: "none", padding: "0px 6px" }}
+                    value={filterText}
+                    onChange={(e) => setFilterText(e.target.value)}
+                  />
+                </div>
                 <i className="fas fa-search position-relative" style={{ right: "30px", top: "60%" }}></i>
-                <Button className="   btn-sm mt-3 me-3 p-2" href="#" onClick={handleShow1}>
+                <Button className="   btn-sm mt-1 me-3 p-1" href="#"   onClick={handleShow1} style={{ background: " #389ae0" }}>
                   Add Job  <FaPlusCircle className="ms-1" />
+                  {/* {showJobForm && <JobForm onClose={handleCloseForm} />} */}
                 </Button>
               </div>
             </Col>
           </Row>
-      
+
           <Row>
             <Col>
               <DataTable
@@ -292,7 +310,7 @@ export default function Job_Posts() {
           </Row>
         </Container>
       </div>
-      
+
       <Modal show={showModal} style={{ fontSize: "16px" }} size="lg" backdrop="static" onHide={handleModalClose}>
         <Modal.Header style={{ fontSize: "16px" }} closeButton>
           <Modal.Title>
@@ -330,12 +348,17 @@ export default function Job_Posts() {
                   </Form.Group>
                 </Col>
               </Row>
+              <Modal.Footer>
+
+                <Row>
+                  <Col md={4}>
+                    <Button variant="primary" type="submit">
+                      {isUpdate ? "Update Job" : "Add Job"}
+                    </Button>
+                  </Col>
+                </Row>
+              </Modal.Footer>
             </Container>
-            <Modal.Footer>
-              <Button variant="primary" type="submit">
-                {isUpdate ? "Update Job" : "Add Job"}
-              </Button>
-            </Modal.Footer>
           </Form>
         </Modal.Body>
       </Modal>
@@ -351,192 +374,192 @@ export default function Job_Posts() {
         </Modal.Footer>
       </Modal>
       {/* add job modal */}
-      <Modal size="lg" show={show1}  fullscreen={fullscreen} onHide={handleClose1} backdrop="static" keyboard={false} centered>
-            <Modal.Header closeButton>
-              <Modal.Title>Create Job</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Container>
-                <div className="job-form-container">
-                  <form onSubmit={handleSubmit1} className="job-form" autoComplete="off">
+      {/* <Modal size="lg" show={show1} fullscreen={fullscreen} onHide={handleClose1} backdrop="static" keyboard={false} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Create Job</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <div className="job-form-container">
+              <form onSubmit={handleSubmit1} className="job-form" autoComplete="off"> */}
 
-                    {/* JOB DETAILS */}
-                    <h5 className="form-title mb-3 text-start">Job Details</h5>
-                    <Row>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><Briefcase size={18} /> Job Title</label>
-                          <input
-                            type="text"
-                            name="jobTitle"
-                            value={formData.jobTitle}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><FileText size={18} /> Job Description</label>
-                          <input
-                            type="text"
-                            name="jobDescription"
-                            value={formData.jobDescription}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </Col>
-                    </Row>
+                {/* JOB DETAILS */}
+                {/* <h5 className="form-title mb-3 text-start">Job Details</h5>
+                <Row>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><Briefcase size={18} /> Job Title</label>
+                      <input
+                        type="text"
+                        name="jobTitle"
+                        value={formData.jobTitle}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><FileText size={18} /> Job Description</label>
+                      <input
+                        type="text"
+                        name="jobDescription"
+                        value={formData.jobDescription}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </Col>
+                </Row>
 
-                    <Row>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><User size={18} /> Experience (Optional)</label>
-                          <input
-                            type="text"
-                            className="experience-field"
-                            name="experience"
-                            value={formData.experience}
-                            onChange={handleChange}
-                          />
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><Code size={18} /> Required Skills</label>
-                          <div className="skill-input-container">
-                            <input
-                              className="skills-input"
-                              type="text"
-                              name="requiredSkills"
-                              value={formData.requiredSkills}
-                              onChange={handleChange}
-                            />
-                            <button type="button" className="add-skill-btn" onClick={addSkill}>
-                              <Plus size={16} />
+                <Row>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><User size={18} /> Experience (Optional)</label>
+                      <input
+                        type="text"
+                        className="experience-field"
+                        name="experience"
+                        value={formData.experience}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><Code size={18} /> Required Skills</label>
+                      <div className="skill-input-container">
+                        <input
+                          className="skills-input"
+                          type="text"
+                          name="requiredSkills"
+                          value={formData.requiredSkills}
+                          onChange={handleChange}
+                        />
+                        <button type="button" className="add-skill-btn" onClick={addSkill}>
+                          <Plus size={16} />
+                        </button>
+                      </div>
+                      <div className="skills-box">
+                        {skills.map((skill, index) => (
+                          <div key={index} className="skill-tag">
+                            {skill}
+                            <button
+                              type="button"
+                              className="remove-skill"
+                              onClick={() => removeSkill(index)}
+                            >
+                              <X size={14} />
                             </button>
                           </div>
-                          <div className="skills-box">
-                            {skills.map((skill, index) => (
-                              <div key={index} className="skill-tag">
-                                {skill}
-                                <button
-                                  type="button"
-                                  className="remove-skill"
-                                  onClick={() => removeSkill(index)}
-                                >
-                                  <X size={14} />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-
-                    {/* COMPANY INFO */}
-                    <h5 className="form-title mb-3 text-start">Company Info</h5>
-                    <Row>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><Building size={18} /> Company Name</label>
-                          <input
-                            type="text"
-                            name="companyName"
-                            value={formData.companyName}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><Building size={18} /> Job Location</label>
-                          <select
-                            name="jobLocation"
-                            value={formData.jobLocation}
-                            onChange={handleChange}
-                            required
-                          >
-                            <option value="" disabled>Select Location</option>
-                            <option value="On-site">On-site</option>
-                            <option value="Hybrid">Hybrid</option>
-                            <option value="Remote">Remote</option>
-                          </select>
-                        </div>
-                      </Col>
-                    </Row>
-
-                    {/* JOB TYPE AND DEADLINE */}
-                    <h5 className="form-title mb-3 text-start">Job Preferences</h5>
-                    <Row>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><ClipboardList size={18} /> Job Type</label>
-                          <select
-                            name="jobType"
-                            value={formData.jobType}
-                            onChange={handleChange}
-                            required
-                          >
-                            <option value="" disabled>Select Job Type</option>
-                            <option value="Full-time">Full-time</option>
-                            <option value="Part-time">Part-time</option>
-                          </select>
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><Calendar size={18} /> Application Deadline (Optional)</label>
-                          <input
-                            type="date"
-                            name="applicationDeadline"
-                            value={formData.applicationDeadline}
-                            onChange={handleChange}
-                          />
-                        </div>
-                      </Col>
-                    </Row>
-
-                    {/* LIMITS SECTION */}
-                    <h5 className="form-title mb-3 text-start">Openings & Limits</h5>
-                    <Row>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><Users size={18} /> Number of Openings</label>
-                          <input
-                            type="number"
-                            name="numberOfOpenings"
-                            value={formData.numberOfOpenings}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </Col>
-                      <Col md={6}>
-                        <div className="form-group">
-                          <label><ClipboardList size={18} /> Max Applications</label>
-                          <input
-                            type="number"
-                            name="maxApplications"
-                            value={formData.maxApplications}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                      </Col>
-                    </Row>
-
-                    {/* SUBMIT */}
-                    <div className="form-group d-flex justify-content-end">
-                      <Button type="submit" className="submit-btn btn btn-sm" onSubmit={handleSubmit1}>Submit</Button>
+                        ))}
+                      </div>
                     </div>
-                  </form>
+                  </Col>
+                </Row> */}
+
+                {/* COMPANY INFO */}
+                {/* <h5 className="form-title mb-3 text-start">Company Info</h5>
+                <Row>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><Building size={18} /> Company Name</label>
+                      <input
+                        type="text"
+                        name="companyName"
+                        value={formData.companyName}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><Building size={18} /> Job Location</label>
+                      <select
+                        name="jobLocation"
+                        value={formData.jobLocation}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="" disabled>Select Location</option>
+                        <option value="On-site">On-site</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Remote">Remote</option>
+                      </select>
+                    </div>
+                  </Col>
+                </Row> */}
+
+                {/* JOB TYPE AND DEADLINE */}
+                {/* <h5 className="form-title mb-3 text-start">Job Preferences</h5>
+                <Row>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><ClipboardList size={18} /> Job Type</label>
+                      <select
+                        name="jobType"
+                        value={formData.jobType}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="" disabled>Select Job Type</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                      </select>
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><Calendar size={18} /> Application Deadline (Optional)</label>
+                      <input
+                        type="date"
+                        name="applicationDeadline"
+                        value={formData.applicationDeadline}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </Col>
+                </Row> */}
+
+                {/* LIMITS SECTION */}
+                {/* <h5 className="form-title mb-3 text-start">Openings & Limits</h5>
+                <Row>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><Users size={18} /> Number of Openings</label>
+                      <input
+                        type="number"
+                        name="numberOfOpenings"
+                        value={formData.numberOfOpenings}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="form-group">
+                      <label><ClipboardList size={18} /> Max Applications</label>
+                      <input
+                        type="number"
+                        name="maxApplications"
+                        value={formData.maxApplications}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </Col>
+                </Row> */}
+
+                {/* SUBMIT */}
+                {/* <div className="form-group d-flex justify-content-end">
+                  <Button type="submit" className="submit-btn btn btn-sm" onSubmit={handleSubmit1}>Submit</Button>
                 </div>
-             </Container>
-            </Modal.Body>
-        </Modal>
+              </form>
+            </div>
+          </Container>
+        </Modal.Body>
+      </Modal> */}
 
       <ToastContainer />
     </Container>

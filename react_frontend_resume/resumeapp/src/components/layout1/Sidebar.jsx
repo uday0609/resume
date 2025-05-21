@@ -7,6 +7,7 @@ import {
   faUser,
   faHandHoldingUsd,
   faCommentDots,
+  faTableList
 } from "@fortawesome/free-solid-svg-icons";
 // import logo from "../images/logo.jpg";
 // import "../assets/css/Sidebar.css";
@@ -19,14 +20,14 @@ export default function Sidebar() {
       icon: <FontAwesomeIcon icon={faHouse} size="lg" />,
     },
     {
-      path: "/admin/Job_Posts",
-      label: "Job_Posts",
-      icon: <FontAwesomeIcon icon={faHouse} size="lg" />,
+      path: "/admin/Jobs",
+      label: "Jobs",
+      icon: <FontAwesomeIcon icon={faTableList} size="lg" />,
     },
-    { path: "/admin/Add_Jobs",
-      label: "Add_Jobs",
-      icon: <FontAwesomeIcon icon={faHouse} size="lg" />
-     }
+    // { path: "/admin/Add_Jobs",
+    //   label: "Add_Jobs",
+    //   icon: <FontAwesomeIcon icon={faHouse} size="lg" />
+    //  }
     // {
     //   path: "/admin/dashboard",
     //   label: "dashboard",
@@ -44,7 +45,7 @@ export default function Sidebar() {
       fluid
       className="p-0 vh-100"
       style={{
-        background: "linear-gradient(180deg,rgb(71 71 86), rgb(22, 33, 62))",
+        background: "linear-gradient(180deg,rgb(71 71 86), rgb(57, 76, 129))",
         color: "white",
         textDecoration:"none"
       }}
@@ -76,7 +77,7 @@ export default function Sidebar() {
               to={item.path}
               className={({ isActive }) =>
                 `d-block py-2 px-3 ${
-                  isActive ? "bg-primary text-white" : "text-white"
+                  isActive ? "bg-light text-dark" : "text-white"
                 }`
               }
               style={{
