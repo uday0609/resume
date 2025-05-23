@@ -16,7 +16,7 @@ export default function Main() {
         
         <Col className='p-0 vh-100 overflow-auto'>
           <Header showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
-          <Outlet />
+          {/* <Outlet /> */}
         </Col>
       </Row>
     </Container>

@@ -13,9 +13,9 @@ const  ResultReport = ()=>{
         address: "123 Main Street",
         email:"name@gmail.com"
       };
-    const percentage=40;
+    const percentage=84;
     const messageStyle = {
-        color: percentage >= 70 ? 'green' : percentage <= 30 ? 'red' : 'orange', // color as per value score
+        color: percentage >= 85 ? 'green' : percentage <= 30 ? 'red' : 'orange', // color as per value score
       };
     return(
        <>
@@ -34,16 +34,16 @@ const  ResultReport = ()=>{
                         <div className="message-container mt-2 pt-1 ">
                             {/* <h1>Your Progress: {percentage}%</h1> */}
                             <h5 style={messageStyle} className='fw-bold px-2'>
-                                {percentage >= 70 ?  "Excellent! You have achieved"  : 
+                                {percentage >= 85 ?  "Excellent! You have achieved"  : 
                                 percentage <= 30 ? 'Low progress. Keep going!' : 'Good progress, almost there!'}
                             </h5>
                             <p className='pt-2 px-2' style={{textAlign:"justify", fontSize:'15px'}}>
-                                {percentage >= 70 ?  "You'll be good candidate as your resume demonstrates a high level of relevance to the position."  : 
+                                {percentage >= 85 ?  "You'll be good candidate as your resume demonstrates a high level of relevance to the position."  : 
                                 percentage <= 30 ?'Your resume does not appear to closely align with the required skills and experience for this position.'
                                  :'While your resume demonstrates some relevant skills and experience, it could be significantly improved by incorporating more targeted skills. '}
                             </p>
                             <p className='px-2 ' style={{textAlign:"justify",fontSize:'15px'}}>
-                                {percentage >= 70 ?  "Your skills strongly aligns with the job requirements."  : 
+                                {percentage >= 85 ?  "Your skills strongly aligns with the job requirements."  : 
                                 percentage <= 30 ? " Incorporate more specific keywords and highlighting relevant achievements that directly match the role's needs."
                                  : 'Consider tailoring your resume further to highlight the key requirements listed in posting.'}
                             </p>
@@ -102,8 +102,8 @@ const  ResultReport = ()=>{
                 </Row>
             </Container>
         </Modal.Body>
-        <Modal.Footer>
-            <Button className='' variant='success'> download pdf</Button>
+        {/* <Modal.Footer> */}
+            {/* <Button className='' variant='success'> download pdf</Button> */}
             {/* <PDFDownloadLink
              document={<Resultpdf extraData={extraData} />}
              fileName="my-report.pdf"
@@ -111,7 +111,7 @@ const  ResultReport = ()=>{
             {({ loading }) => (loading ? 'Loading...' : 'Download PDF')}
             </PDFDownloadLink>
             */}
-        </Modal.Footer>
+        {/* </Modal.Footer> */}
        </>
     );
 }

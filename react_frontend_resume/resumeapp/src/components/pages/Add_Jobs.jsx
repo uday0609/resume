@@ -11,47 +11,12 @@
 
 import { useState } from "react";
 import {
-  Briefcase, FileText, Code, User, Building, Users,
-  ClipboardList, Calendar, Plus, X
+  Briefcase, FileText, Code, User, Building, Users, ClipboardList, Calendar, Plus, X
 } from "lucide-react";
 import FormField from "./FormField";
 import "../assets/css/JobForm.css";
 import Post from "../api/jobPost";
-
-// Skills Input as separate component
-const SkillsInput = ({ skills, value, onChange, addSkill, removeSkill }) => (
-  <div className="form-group">
-    <label><Code size={18} /> Required Skills</label>
-    <div className="skill-input-container">
-      <input
-        type="text"
-        name="requiredSkills"
-        value={value}
-        onChange={onChange}
-        placeholder="Enter a skill"
-      />
-      <button type="button" className="add-skill-btn" onClick={addSkill} aria-label="Add skill">
-        <Plus size={16} />
-      </button>
-    </div>
-    <div className="skills-box">
-      {skills.map((skill, index) => (
-        <div key={index} className="skill-tag">
-          {skill}
-          <button
-            type="button"
-            className="remove-skill"
-            onClick={() => removeSkill(index)}
-            aria-label="Remove skill"
-          >
-            <X size={14} />
-          </button>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
+import { Container, Row, Col, Button } from "react-bootstrap"
 const Add_Jobs = () => {
   const [formData, setFormData] = useState({
     jobTitle: "",
@@ -72,8 +37,8 @@ const Add_Jobs = () => {
     let { name, value } = e.target;
 
     // Prevent negative numbers
-    if (["numberOfOpenings", "maxApplications"].includes(name)) {
-      value = Math.max(0, value);
+    if (["numberOfOpenings", "maxApplications"].includes(name) && value < 0) {
+      value = 0;
     }
 
     setFormData({ ...formData, [name]: value });
@@ -81,7 +46,7 @@ const Add_Jobs = () => {
 
   const addSkill = () => {
     const newSkill = formData.requiredSkills.trim();
-    if (newSkill && !skills.includes(newSkill)) {
+    if (newSkill !== "" && !skills.includes(newSkill)) {
       setSkills([...skills, newSkill]);
       setFormData({ ...formData, requiredSkills: "" });
     }
@@ -91,70 +56,209 @@ const Add_Jobs = () => {
     setSkills(skills.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit1 = async (e) => {
     e.preventDefault();
     const cleanedData = Object.fromEntries(
-      Object.entries(formData).map(([k, v]) => [k, v.trim()])
+      Object.entries(formData).map(([key, value]) => [key, value.trim()])
     );
-    const payload = { ...cleanedData, skills };
+    console.log("Submitted Data:", { ...cleanedData, skills });
+    console.log(cleanedData)
 
-    console.log("Submitted Data:", payload);
-
-    try {
-      await Post.Add_Jobs_Description(payload);
-    } catch (error) {
-      console.error("Job submission failed:", error);
-    }
+    let sent = await Post.Add_Jobs_Description(cleanedData)
   };
 
+
   return (
-    <div className="job-form-container">
-      <h2 className="form-title">Post a Job</h2>
-      <form onSubmit={handleSubmit} className="job-form" autoComplete="off">
-        <FormField label={<><Briefcase size={18} /> Job Title</>} type="text" name="jobTitle" value={formData.jobTitle} onChange={handleChange} required />
+    <>
+      <Container fluid className="pt-5 mt-2">
+        <div className="job-form-container">
+          <h2 className="form-title">Post a Job</h2>
+          <form onSubmit={handleSubmit1} className="job-form" autoComplete="off">
 
-        <FormField label={<><FileText size={18} /> Job Description</>} type="text" name="jobDescription" value={formData.jobDescription} onChange={handleChange} required />
+            {/* JOB DETAILS */}
+            <h5 className="form-title mb-3 text-start">Job Details</h5>
+            <Row>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><Briefcase size={18} /> Job Title</label>
+                  <input
+                    type="text"
+                    name="jobTitle"
+                    value={formData.jobTitle}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><FileText size={18} /> Job Description</label>
+                  <input
+                    type="text"
+                    name="jobDescription"
+                    value={formData.jobDescription}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </Col>
+            </Row>
 
-        <SkillsInput
-          skills={skills}
-          value={formData.requiredSkills}
-          onChange={handleChange}
-          addSkill={addSkill}
-          removeSkill={removeSkill} 
-        />
+            <Row>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><User size={18} /> Experience (Optional)</label>
+                  <input
+                    type="text"
+                    className="experience-field"
+                    name="experience"
+                    value={formData.experience}
+                    onChange={handleChange}
+                  />
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><Code size={18} /> Required Skills</label>
+                  <div className="skill-input-container">
+                    <input
+                      className="skills-input"
+                      type="text"
+                      name="requiredSkills"
+                      value={formData.requiredSkills}
+                      onChange={handleChange}
+                    />
+                    <button type="button" className="add-skill-btn" onClick={addSkill}>
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                  <div className="skills-box">
+                    {skills.map((skill, index) => (
+                      <div key={index} className="skill-tag">
+                        {skill}
+                        <button
+                          type="button"
+                          className="remove-skill"
+                          onClick={() => removeSkill(index)}
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Col>
+            </Row>
 
-        <FormField label={<><User size={18} /> Experience (Optional)</>} type="text" name="experience" value={formData.experience} onChange={handleChange} />
+            {/* COMPANY INFO */}
+            <h5 className="form-title mb-3 text-start">Company Info</h5>
+            <Row>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><Building size={18} /> Company Name</label>
+                  <input
+                    type="text"
+                    name="companyName"
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><Building size={18} /> Job Location</label>
+                  <select
+                    name="jobLocation"
+                    value={formData.jobLocation}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="" disabled>Select Location</option>
+                    <option value="On-site">On-site</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Remote">Remote</option>
+                  </select>
+                </div>
+              </Col>
+            </Row>
 
-        <div className="form-group">
-          <label><ClipboardList size={18} /> Job Type</label>
-          <select name="jobType" value={formData.jobType} onChange={handleChange} required>
-            <option value="" disabled>Select Job Type</option>
-            <option value="Full-time">Full-time</option>
-            <option value="Part-time">Part-time</option>
-          </select>
+            {/* JOB TYPE AND DEADLINE */}
+            <h5 className="form-title mb-3 text-start">Job Preferences</h5>
+            <Row>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><ClipboardList size={18} /> Job Type</label>
+                  <select
+                    name="jobType"
+                    value={formData.jobType}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="" disabled>Select Job Type</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                  </select>
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><Calendar size={18} /> Application Deadline (Optional)</label>
+                  <input
+                    type="date"
+                    name="applicationDeadline"
+                    value={formData.applicationDeadline}
+                    onChange={handleChange}
+                  />
+                </div>
+              </Col>
+            </Row>
+
+            {/* LIMITS SECTION */}
+            <h5 className="form-title mb-3 text-start">Openings & Limits</h5>
+            <Row>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><Users size={18} /> Number of Openings</label>
+                  <input
+                    type="number"
+                    name="numberOfOpenings"
+                    value={formData.numberOfOpenings}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </Col>
+              <Col md={6}>
+                <div className="form-group">
+                  <label><ClipboardList size={18} /> Max Applications</label>
+                  <input
+                    type="number"
+                    name="maxApplications"
+                    value={formData.maxApplications}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </Col>
+            </Row>
+
+            {/* SUBMIT */}
+            <div className="form-group d-flex justify-content-end flex-end align-items-end"
+            >
+              <Row>
+                <Col md={2}>
+                  <Button type="submit" className="submit-btn btn btn-sm">Submit</Button>
+                </Col>
+              </Row>
+            </div>
+          </form>
         </div>
+      </Container>
 
-        <div className="form-group">
-          <label><Building size={18} /> Location</label>
-          <select name="jobLocation" value={formData.jobLocation} onChange={handleChange} required>
-            <option value="" disabled>Select Location</option>
-            <option value="On-site">On-site</option>
-            <option value="Hybrid">Hybrid</option>
-            <option value="Remote">Remote</option>
-          </select>
-        </div>
 
-        <FormField label={<><Building size={18} /> Company Name</>} type="text" name="companyName" value={formData.companyName} onChange={handleChange} required />
 
-        <FormField label={<><Users size={18} /> Number of Openings</>} type="number" name="numberOfOpenings" value={formData.numberOfOpenings} onChange={handleChange} required />
-
-        <FormField label={<><ClipboardList size={18} /> Max Applications Accepted</>} type="number" name="maxApplications" value={formData.maxApplications} onChange={handleChange} required />
-
-        <FormField label={<><Calendar size={18} /> Application Deadline (Optional)</>} type="date" name="applicationDeadline" value={formData.applicationDeadline} onChange={handleChange} />
-
-        <button type="submit" className="submit-btn">Submit</button>
-      </form>
-    </div>
+    </>
   );
 };
 

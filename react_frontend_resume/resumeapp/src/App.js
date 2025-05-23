@@ -10,8 +10,18 @@ import Dashboard from './components/pages/Dashboard';
 import Main from './components/layout1/Main';
 import Job_Posts from './components/pages/Job_Posts';
 import Add_Jobs from './components/pages/Add_Jobs';
+import JobForm from './components/pages/JobForm';
 // import Footer from './components/pages/Footer';
+import React,{useEffect} from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 function App() {
+   useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
   return (
     <BrowserRouter>
         <AppWithRouter/>
@@ -37,8 +47,9 @@ function AppWithRouter() {
           <Route index element={<Dashboard/>}/>
           {/* <Route path="home" element={<Home/>}/> */}
           <Route path="Home"element={<Dashboard />} />
-          <Route path='Job_Posts' element={<Job_Posts/>}/>
-          <Route path='Add_Jobs' element={<Add_Jobs/>}/>
+          <Route path='Jobs' element={<Job_Posts/>}/>
+           <Route path="add_job" element={<JobForm />} />
+          {/* <Route path='Add_Jobs' element={<Add_Jobs/>}/> */}
           
 
 

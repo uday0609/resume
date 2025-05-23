@@ -38,16 +38,37 @@ async function getJobById(row) {
     return response.json();
 }
 
-async function updateJobDescriptions(data,id){
-    // console.log("Id is:",id);
+async function updateJobDescriptions(id, data) {
+  try {
+    console.log("Sending update request for job ID:", id);
+    console.log("Payload being sent:", JSON.stringify(data));
+
+    // Format required_skills as a string with the same format used in DB ({"HTML","CSS",...})
+    const requiredSkillsFormatted = `{"${data.required_skills.join('","')}"}`;
+
     const response = await fetch(`http://localhost:5000/jobs/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+        required_skills: requiredSkillsFormatted,  // Use the formatted required_skills
+      }),
     });
-    return response.json();
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      console.error("Error from server:", responseData);
+      throw new Error(responseData.error || "Something went wrong");
+    }
+
+    return responseData;
+  } catch (err) {
+    console.error("updateJobDescriptions error:", err.message);
+    throw err;
+  }
 }
 
 async function deleteJobDescription(id){

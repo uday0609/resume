@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Link, NavLink } from 'react-router-dom';
-
+import { FaIdBadge } from "react-icons/fa";
 import '../assets/css/Header.css';
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -33,26 +33,51 @@ const Header = () => {
     };
   }, []);
   return (
-      <Navbar collapseOnSelect expand="lg" className={`navbar shadow ${isScrolled ? 'navbar-scrolled' : ''} `}>
+    <Navbar collapseOnSelect expand="lg" className={`navbar shadow ${isScrolled ? 'navbar-scrolled' : ''} `}>
       <Container>
-        <NavLink  to="/" className="fs-6" style={{ color: "#389ae0", fontWeight: 500 }}>Resume_Screener</NavLink>
+        <NavLink to="/" className="fs-6 me-auto" style={{ color: "#389ae0", fontWeight: 500 }}>Resume_Screener</NavLink>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav" className='justify-content-lg-end'>
-          <Nav>
-            <ul className='flex-lg-row flex-column' style={{listStyle:"none", display:"flex", paddingLeft:'0',justifyContent:"start", marginBottom:'0'}}>
-              <li><NavLink to="/" className="nav-link mx-lg-2"> Home </NavLink></li>
-              <li> <NavLink to="/about" className="nav-link mx-lg-2"> About </NavLink></li>
-              <li><NavLink to="/tester" className="nav-link msx-lg-2"> Resume_Tester </NavLink></li>
-            </ul>
-            
+          <div className="w-100 d-lg-flex justify-content-between align-items-center">
+            <Nav className="mx-auto">
+              <ul className='flex-lg-row flex-column ' style={{ listStyle: "none", display: "flex", paddingLeft: '0', justifyContent: "start", marginBottom: '0' }}>
+                <li><NavLink to="/" className={({ isActive }) =>
+                  `nav-link mx-lg-2 ${isActive ? 'active-link' : ''}`
+                }> Home </NavLink></li>
+                <li> <NavLink to="/about" className={({ isActive }) =>
+                  `nav-link mx-lg-2 ${isActive ? 'active-link' : ''}`
+                }> About </NavLink></li>
+                <li><NavLink to="/tester" className={({ isActive }) =>
+                  `nav-link mx-lg-2 ${isActive ? 'active-link' : ''}`
+                }> Resume Tester </NavLink></li>
+              </ul>
+
+            </Nav>
+          </div>
+          <Nav className="ms-lg-auto mt-2 mt-lg-0">
+            <NavLink
+              to="/admin"
+              className="admin nav-link mx-lg-2 d-inline-lg-flex align-items-center"
+              style={{
+                fontSize: "17px",
+                border: "2px solid #389ae0",
+                borderRadius: "8px",
+                padding: "3px 6px",
+                color: "#389ae0",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+                width: "fit-content",
+                // alignSelf: "center"
+              }}
+            >
+              <FaIdBadge className="me-1" />
+              Admin
+            </NavLink>
           </Nav>
-          <Nav>
-            <NavLink to="/admin" className='admin mx-lg-2 '><i className="bi bi-person-badge-fill " style={{ fontSize: '18px' }}></i>Admin</NavLink>
-           </Nav>
-        
+
         </Navbar.Collapse>
-    </Container>
-      </Navbar>
+      </Container>
+    </Navbar>
 
   );
 

@@ -5,7 +5,7 @@ a{
 .bg{
     position: relative;
     /* background: url(./assets/images/bg.jpg) no-repeat ; */
-    background-image: linear-gradient(to bottom, transparent 60%, rgb(247, 244, 244) 100%), url(../images/bg.jpg);
+    background-image: linear-gradient(to bottom, transparent 30%, rgb(247, 244, 244) 100%), url(../images/bg.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -30,7 +30,7 @@ a{
 .admin1  {
     background-color: transparent;
     border:2px solid #389ae0;
-    font-weight: 600;
+    font-weight: 680;
     font-size: 1.3rem;
     color:#389ae0;
     text-decoration: none;
@@ -38,7 +38,35 @@ a{
     padding: 0px;
   }
   .admin1:hover {
-    background-color:rgba(56, 154, 224, 0.55);
+    background-color:rgba(83, 179, 243, 0.2);
+    transition: background-color 0.3s, color 0.3s;
+    color:#389ae0;
+
+  }
+.uploadbtn  {
+    background-color: #389ae0;
+    border:none;
+    font-weight: 680;
+    font-size: 1.3rem;
+    color:white;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    padding: 0px;
+  }
+   .uploadbtn:hover {
+    background-color:rgb(88, 169, 226);
+    border : none;
     transition: background-color 0.3s, color 0.3s;
     color:white;
+  }
+  .try{
+    animation:shake 2.5s ease-in-out 0s infinite alternate none running ;
+  }
+  @keyframes shake {
+    0%{
+      transform: translateY(0px);
+    }
+    100%{
+      transform: translateY(10px);
+    }
   }
