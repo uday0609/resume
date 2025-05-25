@@ -22,7 +22,9 @@ ChartJS.register(
 
 const BarChart = ({ data }) => {
   const chartData = {
+
     labels: ['Total Jobs Applications', 'Selected', 'Hold'],
+
     datasets: [
       {
         label: 'Job Statistics',
@@ -33,6 +35,8 @@ const BarChart = ({ data }) => {
           '#0186C9', // yellow - selected
           '#00639C', // orange - hold
           // '#013B63'  // red - rejected
+
+
         ],
         borderWidth: 1
       }

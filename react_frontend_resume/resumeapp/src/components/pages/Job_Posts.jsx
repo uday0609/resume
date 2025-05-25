@@ -144,7 +144,11 @@ export default function Job_Posts() {
     e.preventDefault();
     try {
       if (isUpdate) {
-        await Post.updateJob(selectedJob.job_id, newJob);
+
+        // await Post.updateJob(selectedJob.job_id, newJob);
+
+        await Post.updateJobDescriptions(selectedJob.job_id, newJob);
+
         toast.success("Job updated successfully!");
       } else {
         await Post.addJob(newJob);
@@ -165,7 +169,11 @@ export default function Job_Posts() {
   const handleConfirmDelete = async () => {
     try {
       if (selectedId) {
-        await Post.deleteJob(selectedId);
+
+        // await Post.deleteJob(selectedId);
+
+        await Post.deleteJobDescription(selectedId);
+
         toast.success("Job deleted successfully");
         handleGetData();
       }
@@ -185,14 +193,37 @@ export default function Job_Posts() {
   const handleUpdateClick = async (row) => {
     try {
       const response = await fetch(`http://localhost:5000/jobs/${row.job_id}`);
+
+      // const data = await response.json();
+
+      
+      // Check if the response is valid JSON
       const data = await response.json();
+      console.log('Received job data:', data); // Log the response
+
+      // Ensure `required_skills` is an array and not a string
+      const requiredSkills = Array.isArray(data.required_skills) ? data.required_skills : JSON.parse(data.required_skills);
+
+
       setSelectedJob(data);
       setNewJob({
         job_title: data.job_title,
         job_description: data.job_description,
-        required_skills: data.required_skills,
+
+        // required_skills: data.required_skills,
+        // experience_required: data.experience_required,
+
+        required_skills: requiredSkills,
         experience_required: data.experience_required,
+        company_name: data.company_name,
+        location: data.location,
+        job_type: data.job_type,
+        deadline: data.deadline,
+        openings: data.openings,
+        max_applications: data.max_applications,
+
       });
+      
       setIsUpdate(true);
       handleModalShow();
     } catch (error) {

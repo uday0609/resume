@@ -1,7 +1,6 @@
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const ResumeModel = require('../modules/resumeModel');
-
 const router = express.Router();
 
 // Utility to handle async errors
@@ -15,9 +14,7 @@ const handleValidationErrors = (req, res, next) => {
   }
   next();
 };
-
-// Validation middleware for resumes
-const validateResumes = [
+const validateResumes = [ 
   body('resumes').isArray().withMessage('At least one resume must be provided'),
   body('resumes.*.name').trim().notEmpty().withMessage('Candidate name is required'),
   body('resumes.*.email').trim().isEmail().withMessage('Valid email is required'),
@@ -28,24 +25,20 @@ const validateResumes = [
   body('resumes.*.matching_score').isNumeric().withMessage('Matching Score must be a number'),
 ];
 
-// Validation middleware for ID
 const validateId = [
   param('id').isInt().withMessage('Invalid resume ID format.'),
 ];
 
 // ✅ Create a new resume
-router.post('/post',
-  [
-    (req, res, next) => {
-      console.log('Received Body:', JSON.stringify(req.body, null, 2));
-      next();
-    },
-    ...validateResumes,
-    handleValidationErrors,
+router.post('/post',[(req, res, next) => {
+    console.log('Received Body:', JSON.stringify(req.body, null, 2));
+    next();
+  },
+  ...validateResumes,
+  handleValidationErrors,
   ],
   asyncHandler(async (req, res) => {
     const selectedResumes = req.body.resumes;
-
     const savedResumes = [];
     for (const resume of selectedResumes) {
       const savedResume = await ResumeModel.saveSelectedResume(resume);
@@ -56,20 +49,14 @@ router.post('/post',
 );
 
 // ✅ Get all resumes
-router.get(
-  '/',
-  asyncHandler(async (req, res) => {
+router.get('/',asyncHandler(async (req, res) => {
     const resumes = await ResumeModel.getAllResumes();
     res.status(200).json({ success: true, data: resumes });
   })
 );
 
 // ✅ Get resume by ID
-router.get(
-  '/:id',
-  validateId,
-  handleValidationErrors,
-  asyncHandler(async (req, res) => {
+router.get('/:id',validateId,handleValidationErrors,asyncHandler(async (req, res) => {
     const resumeId = req.params.id;
     const resume = await ResumeModel.getResumeById(resumeId);
     if (resume) {
@@ -81,9 +68,7 @@ router.get(
 );
 
 // ✅ Update resume
-router.put(
-  '/update/:id',
-  [
+router.put('/update/:id',[
     ...validateId,
     body('title').trim().notEmpty().withMessage('Title is required'),
     body('content').trim().notEmpty().withMessage('Content is required'),
@@ -100,11 +85,7 @@ router.put(
 );
 
 // ✅ Delete resume
-router.delete(
-  '/delete/:id',
-  validateId,
-  handleValidationErrors,
-  asyncHandler(async (req, res) => {
+router.delete('/delete/:id',validateId,handleValidationErrors,asyncHandler(async (req, res) => {
     const resumeId = req.params.id;
     const deletedResume = await ResumeModel.deleteResume(resumeId);
     if (!deletedResume) {
@@ -113,5 +94,4 @@ router.delete(
     res.status(200).json({ success: true, message: 'Resume deleted successfully.' });
   })
 );
-
 module.exports = router;

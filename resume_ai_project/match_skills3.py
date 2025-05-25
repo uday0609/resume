@@ -117,6 +117,7 @@ def match_resume_with_jobs(resume, jobs):
         if final_score >= MATCH_THRESHOLD and final_score > best_score:
             best_match = {
                 "Job ID": job_id,
+                
                 "Experience Required": job_exp,
                 "Matching Score": round(final_score, 2),
                 "Required Skills": job_skills,

@@ -70,8 +70,9 @@ def watch_resume_folder():
             else:
                 print(f"❌ No Suitable Job Found for {resume.get('Name', 'Unknown')}!")
 
-        # ✅ Send batch if it has 10 or more resumes
-        if len(batch) >= 1:
+        # ✅ Send batch if it has 5 or more resumes
+        if len(batch) >= BATCH_SIZE:
+            print(f"📦 Sending batch of {len(batch)} resumes to API...")
             try:
                 send_batch_to_api(batch)
                 print(f"📤 Sent batch of {len(batch)} resumes to API")
