@@ -6,13 +6,13 @@ import React from "react";
 import JobProgressChart from "./JobProgressChart.js";
 const Dashboard = () => {
   // Sample data 
-  const totalJobsapplications = 200;
+  const totalJobsapplications = 160;
   const selected = 100;
   const hold = 60;
-  const rejected = 40;
+//   const rejected = 40;
 
   // Chart expects an array in the correct order
-  const barChartData = [totalJobsapplications, selected, hold, rejected];
+  const barChartData = [totalJobsapplications, selected, hold];
 
     return (
         <>
@@ -21,7 +21,7 @@ const Dashboard = () => {
         </div> */}
             <Container fluid className="py-1" style={{ backgroundColor: "#f8f9fa" }}>
                 <Row className="mt-1 pt-1">
-                    <Col lg={3} sm={6} xs={12}>
+                    <Col lg={4} sm={6} xs={12}>
                         <div
                             className="p-3 d-flex align-items-center my-3 rounded-1 shadow "
                             style={{
@@ -38,7 +38,7 @@ const Dashboard = () => {
 
                         </div>
                     </Col>
-                    <Col lg={3} sm={6} xs={12}>
+                    <Col lg={4} sm={6} xs={12}>
                         <div
                             className="p-3 d-flex align-items-center my-3 rounded-1 shadow"
                             style={{
@@ -55,7 +55,7 @@ const Dashboard = () => {
 
                         </div>
                     </Col>
-                    <Col lg={3} sm={6} xs={12}>
+                    <Col lg={4} sm={6} xs={12}>
                         <div
                             className="p-3 d-flex align-items-center my-3 rounded-1 shadow"
                             style={{
@@ -69,10 +69,9 @@ const Dashboard = () => {
                                 <h5 className="mb-0 ">{hold}</h5>
                             </div>
                             <FaStamp className="p-2 shadow" style={{ color: "#389ae0", borderRadius: "42%", border: "1px solid #389ae0", fontSize: "53px" }} />
-
                         </div>
                     </Col>
-                    <Col lg={3} sm={6} xs={12}>
+                    {/* <Col lg={3} sm={6} xs={12}>
                         <div
                             className="p-3 d-flex align-items-center my-3 rounded-1 shadow"
                             style={{
@@ -88,7 +87,7 @@ const Dashboard = () => {
                             <FaRegTimesCircle className=" p-2 shadow" style={{ color: "#389ae0", border: "1px solid #389ae0", borderRadius: "43%", fontSize: "53px" }} />
 
                         </div>
-                    </Col>
+                    </Col> */}
                 </Row>
                 <Row>
                     <Col lg={6}>
