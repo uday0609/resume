@@ -176,7 +176,7 @@ export default function Job_Posts() {
       setSelectedId(null);
     }
   };
-
+  
   const handleCancel = () => {
     setDeleteModel(false);
     setSelectedId(null);
