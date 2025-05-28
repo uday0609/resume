@@ -62,7 +62,7 @@ const BarChart = ({ data }) => {
   };
 
   return (
-    <div style={{ width: '100%', height: '400px' }}>
+    <div className="p-3 mx-3 shadow" style={{ width: '100%', height: '400px' }}>
       <Bar data={chartData} options={options} />
     </div>
   );

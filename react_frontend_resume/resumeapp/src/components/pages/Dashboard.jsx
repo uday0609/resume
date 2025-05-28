@@ -103,14 +103,7 @@ const Dashboard = () => {
                          <JobProgressChart />
                     </Col>
                 </Row>
-                <Row>
-                    <Col lg={6}>
-                        <BarChart data={barChartData} />
-                    </Col>
-                    <Col lg={6}>
-                         <JobProgressChart />
-                    </Col>
-                </Row>
+               
             </Container>
         </>
     );

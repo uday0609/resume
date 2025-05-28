@@ -11,6 +11,7 @@ import Main from './components/layout1/Main';
 import Job_Posts from './components/pages/Job_Posts';
 import Add_Jobs from './components/pages/Add_Jobs';
 import JobForm from './components/pages/JobForm';
+import Candidates from './components/pages/Candidates';
 // import Footer from './components/pages/Footer';
 import React,{useEffect} from 'react';
 import AOS from 'aos';
@@ -48,8 +49,9 @@ function AppWithRouter() {
           {/* <Route path="home" element={<Home/>}/> */}
           <Route path="Home"element={<Dashboard />} />
           <Route path='Jobs' element={<Job_Posts/>}/>
+          <Route path='Candidates' element={<Candidates/>}/>
            <Route path="add_job" element={<JobForm />} />
-          {/* <Route path='Add_Jobs' element={<Add_Jobs/>}/> */}
+        
           
 
 

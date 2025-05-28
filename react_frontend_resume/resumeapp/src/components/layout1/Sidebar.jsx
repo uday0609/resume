@@ -7,7 +7,8 @@ import {
   faUser,
   faHandHoldingUsd,
   faCommentDots,
-  faTableList
+  faTableList,
+  faIdCardAlt
 } from "@fortawesome/free-solid-svg-icons";
 // import logo from "../images/logo.jpg";
 // import "../assets/css/Sidebar.css";
@@ -23,6 +24,10 @@ export default function Sidebar() {
       path: "/admin/Jobs",
       label: "Jobs",
       icon: <FontAwesomeIcon icon={faTableList} size="lg" />,
+    },{
+      path: "/admin/Candidates",
+      label: "Candidates",
+      icon: <FontAwesomeIcon icon={faIdCardAlt} size="lg" />,
     },
     // { path: "/admin/Add_Jobs",
     //   label: "Add_Jobs",
