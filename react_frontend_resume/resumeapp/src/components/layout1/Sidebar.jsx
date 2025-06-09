@@ -10,7 +10,7 @@ import {
   faTableList,
   faIdCardAlt
 } from "@fortawesome/free-solid-svg-icons";
-// import logo from "../images/logo.jpg";
+import HireSync from "../assets/images/HireSync.png"
 // import "../assets/css/Sidebar.css";
 export default function Sidebar() {
   const location = useLocation();
@@ -60,7 +60,7 @@ export default function Sidebar() {
         <Navbar.Brand>  
           <img
             alt="logo"
-            // src={logo}
+            src={HireSync}
             width="120"
             height="120"
             style={{

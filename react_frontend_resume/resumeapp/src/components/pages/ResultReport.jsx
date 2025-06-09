@@ -20,7 +20,7 @@ const  ResultReport = ()=>{
     return(
        <>
          <Modal.Header closeButton>
-                     <Modal.Title>Resume_Screener</Modal.Title>
+                     <Modal.Title>HireSync</Modal.Title>
          </Modal.Header>
          <Modal.Body>
             <Container>

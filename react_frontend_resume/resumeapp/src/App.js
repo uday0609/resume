@@ -12,7 +12,8 @@ import Job_Posts from './components/pages/Job_Posts';
 import Add_Jobs from './components/pages/Add_Jobs';
 import JobForm from './components/pages/JobForm';
 import Candidates from './components/pages/Candidates';
-// import Footer from './components/pages/Footer';
+import Vacancy from './components/pages/Vacancy';
+import Footer from './components/pages/Footer';
 import React,{useEffect} from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -44,6 +45,7 @@ function AppWithRouter() {
         <Route index element={<Home />} />
         <Route path='/about' element={<Aboutus />} />
         <Route path='/tester' element={<Resume_tester />} />
+        <Route path='/vacancies' element={<Vacancy />} />
         <Route path="/admin" element={<Main />}>
           <Route index element={<Dashboard/>}/>
           {/* <Route path="home" element={<Home/>}/> */}
@@ -52,15 +54,10 @@ function AppWithRouter() {
           <Route path='Candidates' element={<Candidates/>}/>
            <Route path="add_job" element={<JobForm />} />
         
-          
-
-
         </Route>
 
       </Routes>
-      
-
-      {/* {!hideNavbarAndFooter && <Footer />} */}
+      {!hideNavbarAndFooter && <Footer />}
     </>
   );
 } 

@@ -79,7 +79,7 @@ const Resume_tester = () => {
 
 
     return (
-        <Container className="pt-5">
+        <Container className="pt-5 ">
             <Row className="pt-5">
                 <Col lg={6} data-aos="zoom-in" className="p-3 my-1  d-flex  justify-content-center align-item-center">
                     <div className="mainbox">
@@ -101,7 +101,7 @@ const Resume_tester = () => {
             </Row>
             <Modal size="lg" show={show1} onHide={handleClose1} backdrop="static" keyboard={false} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Resume_Screener</Modal.Title>
+                    <Modal.Title>HireSync</Modal.Title>
                 </Modal.Header>
                 {/* <Modal.Body>//  Show Download Result Button after Form Submission
                         {formSubmitted && (
