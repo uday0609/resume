@@ -14,10 +14,13 @@ import JobForm from './components/pages/JobForm';
 import Candidates from './components/pages/Candidates';
 import Vacancy from './components/pages/Vacancy';
 import Footer from './components/pages/Footer';
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
+import FloatingButton from './components/pages/FloatingButton';
+import FAQBotModal from './components/pages/FAQBotModal'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 function App() {
+  
    useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -31,6 +34,7 @@ function App() {
   );
 }
 function AppWithRouter() {
+    const [botOpen, setBotOpen] = useState(false);
   const location = useLocation();
   // console.log(location.pathname);
   const hideNavbarAndFooter = [ "/admin","/login"].some((path) =>
@@ -58,6 +62,8 @@ function AppWithRouter() {
 
       </Routes>
       {!hideNavbarAndFooter && <Footer />}
+       <FloatingButton onClick={() => setBotOpen(true)} />
+      <FAQBotModal isOpen={botOpen} onClose={() => setBotOpen(false)} />
     </>
   );
 } 
