@@ -7,9 +7,10 @@ import {
   faUser,
   faHandHoldingUsd,
   faCommentDots,
-  faTableList
+  faTableList,
+  faIdCardAlt
 } from "@fortawesome/free-solid-svg-icons";
-// import logo from "../images/logo.jpg";
+import HireSync from "../assets/images/HireSync.png"
 // import "../assets/css/Sidebar.css";
 export default function Sidebar() {
   const location = useLocation();
@@ -23,6 +24,10 @@ export default function Sidebar() {
       path: "/admin/Jobs",
       label: "Jobs",
       icon: <FontAwesomeIcon icon={faTableList} size="lg" />,
+    },{
+      path: "/admin/Candidates",
+      label: "Candidates",
+      icon: <FontAwesomeIcon icon={faIdCardAlt} size="lg" />,
     },
     // { path: "/admin/Add_Jobs",
     //   label: "Add_Jobs",
@@ -55,7 +60,7 @@ export default function Sidebar() {
         <Navbar.Brand>  
           <img
             alt="logo"
-            // src={logo}
+            src={HireSync}
             width="120"
             height="120"
             style={{

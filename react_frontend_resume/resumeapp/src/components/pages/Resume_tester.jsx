@@ -5,7 +5,7 @@ import Image from 'react-bootstrap/Image';
 import '../assets/css/Resume_tester.css';
 import { useState } from 'react';
 import React from 'react';
-import { Modal, Form } from 'react-bootstrap';
+import { Modal, Form ,Badge} from 'react-bootstrap';
 import ResultReport from "./ResultReport";
 const Resume_tester = () => {
     // const [show, setShow] = useState(false);
@@ -24,11 +24,11 @@ const Resume_tester = () => {
     const [resume, setResume] = useState(null);
     const [errors, setErrors] = useState({}); // Validation errors
     const [formSubmitted, setFormSubmitted] = useState(false);
-    // Handle form submission
+    // submission
     const handleSubmit = (e) => {
         e.preventDefault();
         const newErrors = {};
-        // Validate fields
+        // Validations
         if (!jobTitle) newErrors.jobTitle = 'Job Title is required';
         if (skills.length === 0) newErrors.skills = 'At least one skill is required';
         if (!resume) newErrors.resume = 'Resume is required';
@@ -45,14 +45,20 @@ const Resume_tester = () => {
         }
     };
 
-    // Handle adding skill
+    // adding skill
     const handleAddSkill = () => {
-        const trimmedSkill = skillInput.trim();
-        if (trimmedSkill && !skills.includes(trimmedSkill)) {
-            setSkills([...skills, trimmedSkill]);
-            //   setDropdownSkills([...dropdownSkills, trimmedSkill]);
-            setSkillInput(''); // Clear input field after adding skill
+        const newSkills = skillInput
+            .split(',')
+            .map(skill => skill.trim())
+            .filter(skill => skill && !skills.includes(skill));
+        if (newSkills.length > 0) {
+            setSkills(prev => [...prev, ...newSkills]);
+            setSkillInput('');
         }
+    };
+
+    const handleRemoveSkill = (index) => {
+        setSkills(skills.filter((_, i) => i !== index));
     };
     // Function to reset the skills list for a new user
     //  const handleNewUserSubmit = () => {
@@ -73,7 +79,7 @@ const Resume_tester = () => {
 
 
     return (
-        <Container className="pt-5">
+        <Container className="pt-5 ">
             <Row className="pt-5">
                 <Col lg={6} data-aos="zoom-in" className="p-3 my-1  d-flex  justify-content-center align-item-center">
                     <div className="mainbox">
@@ -85,7 +91,7 @@ const Resume_tester = () => {
                         </div>
                     </div>
                 </Col>
-                <Col lg={6}  data-aos="fade-left" className="pt-3 my-2 ">
+                <Col lg={6} data-aos="fade-left" className="pt-3 my-2 ">
                     <h3 className="display-4 p-2" style={{ fontWeight: '500', color: "#389ae0", textAlign: "justiffy" }}>Is your resume good enough?</h3>
                     <h5 className="fw-light p-3 " style={{ textAlign: "justify" }}> A tester that checks to ensure your resume is ready
                         to perform and get you interview callbacks . Our resume checker doesn’t just check your resume—it transforms
@@ -95,7 +101,7 @@ const Resume_tester = () => {
             </Row>
             <Modal size="lg" show={show1} onHide={handleClose1} backdrop="static" keyboard={false} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Resume_Screener</Modal.Title>
+                    <Modal.Title>HireSync</Modal.Title>
                 </Modal.Header>
                 {/* <Modal.Body>//  Show Download Result Button after Form Submission
                         {formSubmitted && (
@@ -139,7 +145,13 @@ const Resume_tester = () => {
                                                                 type="text"
                                                                 placeholder=""
                                                                 value={skillInput}
-                                                                onChange={(e) => setSkillInput(e.target.value)}// Update input field on change
+                                                                onChange={(e) => setSkillInput(e.target.value)}
+                                                                onKeyDown={(e) => {
+                                                                    if (e.key === 'Enter') {
+                                                                        e.preventDefault();
+                                                                        handleAddSkill();
+                                                                    }
+                                                                }}
                                                                 className="inputstyle"
                                                             >
 
@@ -148,25 +160,18 @@ const Resume_tester = () => {
                                                                 <span className="plus-icon">+</span>
                                                             </Button>
                                                         </div>
-
-
                                                         {errors.skills && <Form.Text className="text-danger">{errors.skills}</Form.Text>}
                                                     </Form.Group>
-
-                                                    {skills.length > 0 && (
-                                                        <div className="skills-list mt-2">
-                                                            <div className="skills-box">
-                                                                {skills.map((skill, index) => (
-                                                                    <React.Fragment key={index}>
-                                                                        {/* Skill Item */}
-                                                                        <div className="skill-item">{skill}</div>
-                                                                        {/* Add comma separator except for the last skill */}
-                                                                        {index < skills.length - 1 && <span className="comma">,</span>}
-                                                                    </React.Fragment>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    )}
+                                                    <div className="mt-2">
+                                                        {skills.map((skill, index) => (
+                                                            <Badge key={index} bg="primary" className="me-2 m-1">
+                                                                {skill}{' '}
+                                                                <span style={{ cursor: 'pointer' }} onClick={() => handleRemoveSkill(index)}>
+                                                                    &times;
+                                                                </span>
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
                                                 </Col>
                                             </Row>
                                         </Col>

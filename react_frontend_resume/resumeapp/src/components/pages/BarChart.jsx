@@ -22,7 +22,9 @@ ChartJS.register(
 
 const BarChart = ({ data }) => {
   const chartData = {
-    labels: ['Total Jobs Applications', 'Selected', 'Hold', 'Rejected'],
+
+    labels: ['Total Jobs Applications', 'Selected', 'Hold'],
+
     datasets: [
       {
         label: 'Job Statistics',
@@ -32,7 +34,9 @@ const BarChart = ({ data }) => {
         //   '#2196f3', // blue - applications
           '#0186C9', // yellow - selected
           '#00639C', // orange - hold
-          '#013B63'  // red - rejected
+          // '#013B63'  // red - rejected
+
+
         ],
         borderWidth: 1
       }
@@ -58,7 +62,7 @@ const BarChart = ({ data }) => {
   };
 
   return (
-    <div style={{ width: '100%', height: '400px' }}>
+    <div className="p-3 mx-3 shadow" style={{ width: '100%', height: '400px' }}>
       <Bar data={chartData} options={options} />
     </div>
   );

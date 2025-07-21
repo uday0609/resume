@@ -53,10 +53,10 @@
 /* Input Fields & Dropdowns */
 .form-group input,
 .form-group select {
-  padding: 12px;
+  padding: 7px;
   border: 2px solid #bbb;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 13px;
   background-color: #e6f7ff;
   color: black;
   transition: 0.3s ease-in-out;
@@ -79,10 +79,10 @@
 
 .skills-input {
   flex: 1;
-  padding: 12px;
+  padding: 2px;
   /* border: 2px solid #bbb; */
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 13px;
   /* background-color: #cdebf6; */
   color: black;
 }
@@ -91,10 +91,10 @@
   background-color: #0056b3;
   color: white;
   border: none;
-  padding: 14px;
+  padding: 7px;
   border-radius: 12%;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,37 +108,35 @@
 .skills-box {
   display: flex;
   flex-wrap: wrap;
-  padding: 10px;
-  background: white;
-  margin-top: 10px;
-  min-height: 55px;
+  padding: 3px;
+  background:transparent ;
+  margin-top: 3px;
+  min-height: 15px;
   border-radius: 8px;
 }
 
 .skill-tag {
   display: flex;
   align-items: center;
-  background: #0056b3;
-  padding: 10px 14px;
-  margin: 6px;
+  background: #0b72e0;
+  padding: 0px 3px;
+  margin: 2px;
   color: white;
-  border-radius: 20px;
-  font-size: 15px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 13px;
   font-weight: bold;
 }
-
 .remove-skill {
   background: none;
   border: none;
   color: white;
-  margin-left: 10px;
+  margin-left: 1px;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.remove-skill:hover {
-  color: #ff3333;
-}
+
 
 /* Experience Field (Optional) */
 .experience-field {
@@ -166,7 +164,6 @@
   margin-top: 30px;
   transition: 0.3s;
 }
-
 .submit-btn:hover {
   background-color: #0073a8;
 }
@@ -189,6 +186,4 @@
   .skills-box {
     justify-content: flex-start;
   }
-
-  
 }

@@ -73,8 +73,10 @@ const JobProgressChart = () => {
 
   return (
     <div
+      className='shadow px-5'
       style={{
-        maxWidth: '400px',
+        maxWidth: '470px',
+        minHeight:'400px',
         margin: 'auto',
         textAlign: 'center',
         fontFamily: 'Arial',
@@ -101,7 +103,7 @@ const JobProgressChart = () => {
 
       </div>
       {/* Gauge Chart with Center Label */}
-      <div style={{ position: 'relative', width: '250px', height: '250px', margin: '0 auto' }}>
+      <div style={{ position: 'relative', width: '200px', height: '200px', margin: '0 auto' }}>
         <Doughnut data={data} options={options} />
         <div
           style={{

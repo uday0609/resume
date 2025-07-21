@@ -2,6 +2,7 @@ a{
   text-decoration: none;
   color:inherit;
 }
+
 .navbar {
     position:fixed;
     z-index: 1000;
@@ -59,4 +60,11 @@ a{
       transition: font-weight 0.2s;
   }
   
- 
+.brand-logo {
+  /* width: 93px;
+  height: 90px; */
+  width:4.5rem;
+  height: 4.5rem;
+  margin-right: 10px;
+  border-radius:100%; 
+} 

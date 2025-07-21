@@ -45,7 +45,7 @@ export default function Job_Posts() {
 
   // const handleClose1 = () => setLgShow1(false);
   // const handleShow1 = () => setLgShow1(true);
-   const [showJobForm, setShowJobForm] = useState(false);
+  const [showJobForm, setShowJobForm] = useState(false);
 
   const handleShow1 = () => {
     navigate("/admin/add_job");
@@ -119,6 +119,7 @@ export default function Job_Posts() {
       console.error("Error fetching job posts:", error);
     }
   };
+  
   const handleModalClose = () => {
     setShowModal(false);
     setNewJob({
@@ -144,7 +145,11 @@ export default function Job_Posts() {
     e.preventDefault();
     try {
       if (isUpdate) {
+
+        // await Post.updateJob(selectedJob.job_id, newJob);
+
         await Post.updateJobDescriptions(selectedJob.job_id, newJob);
+
         toast.success("Job updated successfully!");
       } else {
         await Post.addJob(newJob);
@@ -165,7 +170,11 @@ export default function Job_Posts() {
   const handleConfirmDelete = async () => {
     try {
       if (selectedId) {
+
+        // await Post.deleteJob(selectedId);
+
         await Post.deleteJobDescription(selectedId);
+
         toast.success("Job deleted successfully");
         handleGetData();
       }
@@ -185,7 +194,10 @@ export default function Job_Posts() {
   const handleUpdateClick = async (row) => {
     try {
       const response = await fetch(`http://localhost:5000/jobs/${row.job_id}`);
-      
+
+      // const data = await response.json();
+
+
       // Check if the response is valid JSON
       const data = await response.json();
       console.log('Received job data:', data); // Log the response
@@ -193,10 +205,15 @@ export default function Job_Posts() {
       // Ensure `required_skills` is an array and not a string
       const requiredSkills = Array.isArray(data.required_skills) ? data.required_skills : JSON.parse(data.required_skills);
 
+
       setSelectedJob(data);
       setNewJob({
         job_title: data.job_title,
         job_description: data.job_description,
+
+        // required_skills: data.required_skills,
+        // experience_required: data.experience_required,
+
         required_skills: requiredSkills,
         experience_required: data.experience_required,
         company_name: data.company_name,
@@ -205,13 +222,28 @@ export default function Job_Posts() {
         deadline: data.deadline,
         openings: data.openings,
         max_applications: data.max_applications,
+
       });
-      
+
       setIsUpdate(true);
       handleModalShow();
     } catch (error) {
       console.error("Error fetching job details:", error);
     }
+  };
+  // view details modal control
+  const [viewJob, setViewJob] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
+
+  const handleViewDetails = (job) => {
+    setViewJob(job);
+    setShowViewModal(true);
+    console.log("Deadline:", viewJob?.deadline);
+  };
+
+  const handleCloseViewModal = () => {
+    setShowViewModal(false);
+    setViewJob(null);
   };
 
   const columns = [
@@ -225,7 +257,19 @@ export default function Job_Posts() {
         fontWeight: "bold",
       },
     },
-    { name: <b>Title</b>, selector: (row) => row.job_title, sortable: true },
+    // { name: <b>Title</b>, selector: (row) => row.job_title, sortable: true },
+    {
+      name: <b>Title</b>,
+      selector: (row) => (
+        <span
+          onClick={() => handleViewDetails(row)}
+          style={{ color: "#007bff", textDecoration: "underline", cursor: "pointer" }}
+        >
+          {row.job_title}
+        </span>
+      ),
+      sortable: true
+    },
     { name: <b>Description</b>, selector: (row) => row.job_description, sortable: true },
     { name: <b>Company</b>, selector: (row) => row.company_name, sortable: true },
     {
@@ -302,7 +346,7 @@ export default function Job_Posts() {
                   />
                 </div>
                 <i className="fas fa-search position-relative" style={{ right: "30px", top: "60%" }}></i>
-                <Button className="   btn-sm mt-1 me-3 p-1" href="#"   onClick={handleShow1} style={{ background: " #389ae0" }}>
+                <Button className="   btn-sm mt-1 me-3 p-1" href="#" onClick={handleShow1} style={{ background: " #389ae0" }}>
                   Add Job  <FaPlusCircle className="ms-1" />
                   {/* {showJobForm && <JobForm onClose={handleCloseForm} />} */}
                 </Button>
@@ -377,7 +421,7 @@ export default function Job_Posts() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={deleteModel} onHide={handleCancel}>
+      <Modal show={deleteModel} onHide={handleCancel} >
         <Modal.Header closeButton>
           <Modal.Title>Confirm Deletion</Modal.Title>
         </Modal.Header>
@@ -387,6 +431,73 @@ export default function Job_Posts() {
           <Button variant="danger" onClick={handleConfirmDelete}>Confirm</Button>
         </Modal.Footer>
       </Modal>
+      {/* view details modal  */}
+      <Modal
+        show={showViewModal}
+        onHide={handleCloseViewModal}
+        size="lg"
+        centered
+        backdrop="static"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Job Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {viewJob && (
+            <Container fluid>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Job Title:</Col>
+                <Col md={8}>{viewJob.job_title}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Company:</Col>
+                <Col md={8}>{viewJob.company_name}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Location:</Col>
+                <Col md={8}>{viewJob.location}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Job Type:</Col>
+                <Col md={8}>{viewJob.job_type}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Experience Required:</Col>
+                <Col md={8}>{viewJob.experience_required}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Skills:</Col>
+                <Col md={8}>
+                  {Array.isArray(viewJob.required_skills)
+                    ? viewJob.required_skills.join(", ")
+                    : viewJob.required_skills}
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Description:</Col>
+                <Col md={8}>{viewJob.job_description}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary">Openings:</Col>
+                <Col md={8}>{viewJob.openings}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Max Applications:</Col>
+                <Col md={8}>{viewJob.max_applications}</Col>
+              </Row>
+              <Row className="mb-3">
+                <Col md={4} className="text-primary ">Deadline:</Col>
+                <Col md={8}> {viewJob.deadline
+      ? new Date(viewJob.deadline).toLocaleDateString()
+      : "No deadline set"}</Col>
+              </Row>
+            </Container>
+          )}
+        </Modal.Body>
+      </Modal>
+
+
+
       {/* add job modal */}
       {/* <Modal size="lg" show={show1} fullscreen={fullscreen} onHide={handleClose1} backdrop="static" keyboard={false} centered>
         <Modal.Header closeButton>
@@ -397,8 +508,8 @@ export default function Job_Posts() {
             <div className="job-form-container">
               <form onSubmit={handleSubmit1} className="job-form" autoComplete="off"> */}
 
-                {/* JOB DETAILS */}
-                {/* <h5 className="form-title mb-3 text-start">Job Details</h5>
+      {/* JOB DETAILS */}
+      {/* <h5 className="form-title mb-3 text-start">Job Details</h5>
                 <Row>
                   <Col md={6}>
                     <div className="form-group">
@@ -472,8 +583,8 @@ export default function Job_Posts() {
                   </Col>
                 </Row> */}
 
-                {/* COMPANY INFO */}
-                {/* <h5 className="form-title mb-3 text-start">Company Info</h5>
+      {/* COMPANY INFO */}
+      {/* <h5 className="form-title mb-3 text-start">Company Info</h5>
                 <Row>
                   <Col md={6}>
                     <div className="form-group">
@@ -505,8 +616,8 @@ export default function Job_Posts() {
                   </Col>
                 </Row> */}
 
-                {/* JOB TYPE AND DEADLINE */}
-                {/* <h5 className="form-title mb-3 text-start">Job Preferences</h5>
+      {/* JOB TYPE AND DEADLINE */}
+      {/* <h5 className="form-title mb-3 text-start">Job Preferences</h5>
                 <Row>
                   <Col md={6}>
                     <div className="form-group">
@@ -536,8 +647,8 @@ export default function Job_Posts() {
                   </Col>
                 </Row> */}
 
-                {/* LIMITS SECTION */}
-                {/* <h5 className="form-title mb-3 text-start">Openings & Limits</h5>
+      {/* LIMITS SECTION */}
+      {/* <h5 className="form-title mb-3 text-start">Openings & Limits</h5>
                 <Row>
                   <Col md={6}>
                     <div className="form-group">
@@ -565,8 +676,8 @@ export default function Job_Posts() {
                   </Col>
                 </Row> */}
 
-                {/* SUBMIT */}
-                {/* <div className="form-group d-flex justify-content-end">
+      {/* SUBMIT */}
+      {/* <div className="form-group d-flex justify-content-end">
                   <Button type="submit" className="submit-btn btn btn-sm" onSubmit={handleSubmit1}>Submit</Button>
                 </div>
               </form>

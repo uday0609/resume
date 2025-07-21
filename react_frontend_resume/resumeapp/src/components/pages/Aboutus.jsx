@@ -6,9 +6,9 @@ import '../assets/css/Aboutus.css';
 import cardimg from '../assets/images/cardimg.jpg';
 const Aboutus = () => {
     return (
-        <Container fluid className="bgbase pt-5 ">
-            <Row className="d-flex justify-content-center  align-item-center " >
-                <Col lg={11} data-aos="fade-up" className=" text-center mt-5">
+        <Container fluid className="pt-5 bgbase"  >
+            <Row className="d-flex justify-content-center  align-item-center pt-4 " >
+                <Col lg={11} data-aos="fade-up" className=" text-center mt-5 ">
                     <p className=" fs-4">Say goodbye to resume stress!</p>
                     <p className="display-6 px-4 fw-bold" style={{ color: "#389ae0", fontWeight: 900 }}>"Transforming
                         resumes into powerful career tools, tested for success and tailored to impress!"</p>

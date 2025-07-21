@@ -1,5 +1,3 @@
-const { BodyText } = require("react-bootstrap-icons");
-
 async function getAllResume(params) {
     const response = await fetch('http://localhost:5000/jobs',
         {
@@ -71,14 +69,24 @@ async function updateJobDescriptions(id, data) {
   }
 }
 
-async function deleteJobDescription(id){
+async function deleteJobDescription(id) {
     const response = await fetch(`http://localhost:5000/jobs/${id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
         },
     });
-    return response.json();
+    // Handle non-success status
+    if (!response.ok) {
+        throw new Error("Failed to delete job");
+    }
+    // Check if response has JSON content
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+        return await response.json();
+    }
+    // No content — return something safe
+    return { success: true };
 }
 
 module.exports ={

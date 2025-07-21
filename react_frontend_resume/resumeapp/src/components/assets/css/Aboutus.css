@@ -1,8 +1,11 @@
 .bgbase{
-    background-image: linear-gradient(to bottom, transparent 60%, rgb(247, 244, 244) 100%), url(../images/bg.jpg);
+    background-image: linear-gradient(to bottom, transparent 30%, rgb(247, 244, 244) ,100%), url(../images/bg.jpg);
     background-repeat: no-repeat;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: scroll;
+    overflow: hidden; 
+    height:auto;     
+    min-height: 102vh;       
 }
 /* #912CEE */
 .cardicon{

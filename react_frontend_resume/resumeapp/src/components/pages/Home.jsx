@@ -6,6 +6,7 @@ import '../assets/css/Home.css';
 import resumes from '../assets/images/resumes.png';
 import { startTypewriterEffect } from "../pages/Typewrite.js"; // Import the typewriter logic
 import React, { useEffect,useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 const  Home = ()=>{
     // useEffect(() => {
     //     // Create a script element
@@ -24,7 +25,7 @@ const  Home = ()=>{
     //     // };
     //   },[]); // Empty dependency array ensures it runs only once when the component mounts
     const typewriterRef = useRef(null); // Ref to the typewriter element
-
+ const navigate = useNavigate();
   // Define your words array here (or use props/state)
   const words = ["Upload", "Optimize", "Get Hired!"];
 
@@ -39,8 +40,8 @@ const  Home = ()=>{
   }, []); // Empty dependency array ensures this effect runs once when the component mounts
 
     return (
-        <Container fluid className="bg">
-            <Row className="base1">
+        <Container fluid className="bg pt-1">
+            <Row className="base1  pt-5 ">
                 <Col md={6} data-aos="fade-up-right" className="mt-lg-2 pt-lg-0   mt-3 pt-4  d-flex flex-column  justify-content-center align-items-center">
                     <h2 className=" fw-bold  p-1  mt-4  d-flex align-item-center justify-content-center">Your Next Job Starts Here</h2>
                     <div className="w-full h-full cont display-4 d-flex justify-center items-center" style={{display: "flex",justifycontent: "center",alignitems: "center"}}>
@@ -51,15 +52,15 @@ const  Home = ()=>{
                     <h3 className="mt-2 fs-4   text-center d-flex justify-content-center  ">"Let us help you craft the perfect resume and match it with top job opportunities." </h3>
                     <h3 className="fs-4 justify-content-center text-center "> It's time to land your dream job.</h3>
                     <div className="d-flex  justify-content-center flex-wrap flex-lg-nowrap  p-lg-2 p-1 gap-3  mt-lg-1  ">
-                        <button /*style={{borderRadius:'10%'}}*/ className='uploadbtn p-lg-2 p-1 mt-2 fs-5'>
-                            <a href='#upload' style={{textDecoration:'none'}}><i className="bi bi-file-earmark-arrow-up-fill"></i> Upload Resume</a>
+                        <button /*style={{borderRadius:'10%'}}*/ onClick={() => navigate('/vacancies')} className='uploadbtn p-lg-2 p-1 mt-2 fs-5'>
+                            <a href='' style={{textDecoration:'none'}}><i className="bi bi-file-earmark-arrow-up-fill"></i> Apply Now</a>
                         </button>
-                        <button /*style={{borderRadius:'10%'}}*/ className='admin1  p-lg-2 p-1 mt-2 fs-5'>
-                            <a href='#test' style={{textDecoration:'none'}}><i className="bi bi-journal-check"></i> Test Resume</a>
+                        <button /*style={{borderRadius:'10%'}}*/onClick={() => navigate('/tester')} className='admin1  p-lg-2 p-1 mt-2 fs-5'>
+                            <a href='' style={{textDecoration:'none'}}><i className="bi bi-journal-check"></i> Test Resume</a>
                         </button>
                     </div>
                 </Col>
-                <Col md={6} data-aos="zoom-in" className="p-lg-5 pt-5">
+                <Col md={6} data-aos="zoom-in" className="p-lg-5 pt-4">
                   <Image src={resumes} rounded  fluid className="try"/>
                 </Col>
             </Row>

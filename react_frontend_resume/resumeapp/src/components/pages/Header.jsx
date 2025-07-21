@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import { Link, NavLink } from 'react-router-dom';
 import { FaIdBadge } from "react-icons/fa";
+import HireSync from "../assets/images/HireSync.png"
 import '../assets/css/Header.css';
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,7 +36,8 @@ const Header = () => {
   return (
     <Navbar collapseOnSelect expand="lg" className={`navbar shadow ${isScrolled ? 'navbar-scrolled' : ''} `}>
       <Container>
-        <NavLink to="/" className="fs-6 me-auto" style={{ color: "#389ae0", fontWeight: 500 }}>Resume_Screener</NavLink>
+         <img src={HireSync} alt="HireSync Logo" className="brand-logo fluid" />
+        <NavLink to="/" className="fs-5 me-auto fw-bold .brand-logo " style={{ color: "#389ae0",  }}>HireSync</NavLink>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav" className='justify-content-lg-end'>
           <div className="w-100 d-lg-flex justify-content-between align-items-center">
@@ -50,6 +52,9 @@ const Header = () => {
                 <li><NavLink to="/tester" className={({ isActive }) =>
                   `nav-link mx-lg-2 ${isActive ? 'active-link' : ''}`
                 }> Resume Tester </NavLink></li>
+                <li><NavLink to="/vacancies" className={({ isActive }) =>
+                  `nav-link mx-lg-2 ${isActive ? 'active-link' : ''}`
+                }> Vacancies </NavLink></li>
               </ul>
 
             </Nav>
