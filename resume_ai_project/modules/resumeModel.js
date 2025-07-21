@@ -39,7 +39,7 @@ const resumeModel = {
   // Get resume by ID
   getResumeById: async (id) => {
     try {
-      const query = 'SELECT * FROM selected_resume WHERE id = $1';
+      const query = 'SELECT * FROM selected_resume WHERE resume_id = $1';
       const values = [id];
       const result = await pool.query(query, values);
       if (result.rows.length === 0) {
@@ -58,7 +58,7 @@ const resumeModel = {
       const query = `
         UPDATE selected_resume
         SET candidate_name = $1, email = $2, contact_number = $3, skills = $4, experience = $5, job_id = $6, matching_score = $7
-        WHERE id = $8 RETURNING *`;
+        WHERE resume_id = $8 RETURNING *`;
       const values = [
         resume.candidate_name,
         resume.email,
@@ -83,7 +83,7 @@ const resumeModel = {
   // Delete resume
   deleteResume: async (id) => {
     try {
-      const query = 'DELETE FROM selected_resume WHERE id = $1 RETURNING *';
+      const query = 'DELETE FROM selected_resume WHERE resume_id = $1 RETURNING *';
       const values = [id];
       const result = await pool.query(query, values);
       if (result.rows.length === 0) {

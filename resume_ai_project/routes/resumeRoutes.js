@@ -51,7 +51,7 @@ router.post('/post',[(req, res, next) => {
 // ✅ Get all resumes
 router.get('/',asyncHandler(async (req, res) => {
     const resumes = await ResumeModel.getAllResumes();
-    res.status(200).json({ success: true, data: resumes });
+    res.status(200).json(resumes);
   })
 );
 
@@ -60,7 +60,7 @@ router.get('/:id',validateId,handleValidationErrors,asyncHandler(async (req, res
     const resumeId = req.params.id;
     const resume = await ResumeModel.getResumeById(resumeId);
     if (resume) {
-      res.status(200).json({ success: true, data: resume });
+      res.status(200).json(resume);
     } else {
       res.status(404).json({ success: false, error: 'Resume not found.' });
     }
