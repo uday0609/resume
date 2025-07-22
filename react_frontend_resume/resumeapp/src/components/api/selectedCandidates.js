@@ -5,7 +5,7 @@ async function getAllSelectedResumes(params) {
       "Content-Type": "application/json",
     },
   });
-  console.log("Response from getAllSelectedResumes:", response);
+  // console.log("Response from getAllSelectedResumes:", response);
   const data = await response.json();
   return data;
 }
@@ -17,7 +17,7 @@ async function getSelectedResumeById(resumeId) {
       "Content-Type": "application/json",
     },
   });
-  console.log("Response from getSelectedResumeById:", response);
+  // console.log("Response from getSelectedResumeById:", response);
   return response.json();
 }
 
@@ -38,7 +38,6 @@ async function updateSelectedResume(id, data) {
         skills: data.skills, // Send as comma-separated string or array depending on backend handling
         experience: data.experience,
         matching_score: data.matching_score,
-        job_id: data.job_id,
       }),
     });
 

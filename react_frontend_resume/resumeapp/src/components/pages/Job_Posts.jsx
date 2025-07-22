@@ -231,6 +231,7 @@ export default function Job_Posts() {
       console.error("Error fetching job details:", error);
     }
   };
+  
   // view details modal control
   const [viewJob, setViewJob] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);

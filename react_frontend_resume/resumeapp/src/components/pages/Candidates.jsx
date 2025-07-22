@@ -24,7 +24,6 @@ export default function Candidates() {
     candidate_name: "",
     email: "",
     contact_number: "",
-    address: "",
     company: "",
   });
 
@@ -53,34 +52,46 @@ export default function Candidates() {
       candidate_name: "",
       email: "",
       contact_number: "",
-      address: "",
       company: "",
     });
     setIsUpdate(false);
-   
+    setSelectedId(null);
   };
 
   const handleModalShow = () => {
     setShowModal(true);
   };
 
-  
   const handleSubmit = async (e) => {
-   
-      handleModalClose();
+    e.preventDefault();
+    try{
+      if (isUpdate) {
+        await candidates.updateSelectedResume(selectedId, newData);
+        toast.success("Candidate updated successfully");
+      } else {
+        await candidates.addSelectedResume(newData);
+        toast.success("Candidate added successfully");
+      }
       handleGetData();
+      handleModalClose();
+    }
+    catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Failed to submit form');
+    }
   };
+
   useEffect(() => {}, [filterText, data]);
   const handleDeleteClick = (row) => {
-    setSelectedId(row.id);
+    setSelectedId(row.resume_id);
     setDeleteModel(true);
   };
   const handleConfirmDelete = async () => {
     try {
       if (selectedId) {
-        
+        await candidates.deleteSelectedResume(selectedId);
         toast.success(" deleted successfully");
-       
+        handleGetData();
       }
     } catch (error) {
       toast.error("Error deleting ");
@@ -89,6 +100,7 @@ export default function Candidates() {
       setSelectedId(null);
     }
   };
+
   const handleCancel = () => {
     setDeleteModel(false);
     setSelectedId(null);
@@ -96,17 +108,12 @@ export default function Candidates() {
   
   const handleUpdateClick = async (row) => {
     try{
-      const response= await fetch(`http://localhost:5000/api/candidates/${row.id}`)
-      console.log('Response from API:', response);
-      const data = await response.json();
-      console.log('Received Candidates:', data); // Log the response
+      const data = await candidates.getSelectedResumeById(row.resume_id);
       setSelectedId(data);
       setNewData({
         candidate_name: data.candidate_name,
         email: data.email,
         contact_number: data.contact_number,
-        // address: data.address,
-        // company: data.company,
       });
       setIsUpdate(true);
       handleModalShow();
@@ -115,17 +122,8 @@ export default function Candidates() {
       console.error('Error fetching candidates:', error);
       toast.error('Failed to fetch candidates data');
     }
-    
-    
-    // setNewData({
-    //   name: row.name,
-    //   email: row.email,
-    //   phone: row.phone,
-    //   address: row.address,
-    //   company: row.company, 
-    // });
-    
   };
+
   const columns = [
     {
       name: <b>S.No.</b>,
@@ -260,13 +258,6 @@ export default function Candidates() {
                   <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
                     <Form.Control name="email" type="email" value={newData.email}  required/>
-                  </Form.Group>
-                </Col>
-
-                  <Col>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Address</Form.Label>
-                    <Form.Control name="address" type="text" value={newData.address} required/>
                   </Form.Group>
                 </Col>
               </Row>
