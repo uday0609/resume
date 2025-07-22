@@ -66,7 +66,7 @@ export default function Candidates() {
     e.preventDefault();
     try{
       if (isUpdate) {
-        await candidates.updateSelectedResume(selectedId, newData);
+        await candidates.updateSelectedResume(selectedCandidates.resume_id, newData);
         toast.success("Candidate updated successfully");
       } else {
         await candidates.addSelectedResume(newData);
