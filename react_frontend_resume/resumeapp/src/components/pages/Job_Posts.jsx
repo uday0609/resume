@@ -119,6 +119,7 @@ export default function Job_Posts() {
       console.error("Error fetching job posts:", error);
     }
   };
+  
   const handleModalClose = () => {
     setShowModal(false);
     setNewJob({
@@ -230,6 +231,7 @@ export default function Job_Posts() {
       console.error("Error fetching job details:", error);
     }
   };
+  
   // view details modal control
   const [viewJob, setViewJob] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);

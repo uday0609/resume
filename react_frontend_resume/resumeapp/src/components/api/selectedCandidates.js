@@ -1,13 +1,23 @@
+<<<<<<< HEAD
 // resumeApi.js
 
 async function getAllSelectedResumes() {
+=======
+async function getAllSelectedResumes(params) {
+>>>>>>> origin/master
   const response = await fetch("http://localhost:5000/resumes", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
+<<<<<<< HEAD
   return response.json();
+=======
+  // console.log("Response from getAllSelectedResumes:", response);
+  const data = await response.json();
+  return data;
+>>>>>>> origin/master
 }
 
 async function getSelectedResumeById(resumeId) {
@@ -17,6 +27,10 @@ async function getSelectedResumeById(resumeId) {
       "Content-Type": "application/json",
     },
   });
+<<<<<<< HEAD
+=======
+  // console.log("Response from getSelectedResumeById:", response);
+>>>>>>> origin/master
   return response.json();
 }
 
@@ -37,7 +51,10 @@ async function updateSelectedResume(id, data) {
         skills: data.skills, // Send as comma-separated string or array depending on backend handling
         experience: data.experience,
         matching_score: data.matching_score,
+<<<<<<< HEAD
         job_id: data.job_id,
+=======
+>>>>>>> origin/master
       }),
     });
 
@@ -72,6 +89,10 @@ async function deleteSelectedResume(id) {
     return await response.json();
   }
 
+<<<<<<< HEAD
+=======
+  console.log("Delete operation successful for ID:", id);
+>>>>>>> origin/master
   return { success: true };
 }
 

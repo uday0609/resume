@@ -1,5 +1,3 @@
-const { BodyText } = require("react-bootstrap-icons");
-
 async function getAllResume(params) {
     const response = await fetch('http://localhost:5000/jobs',
         {

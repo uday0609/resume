@@ -10,55 +10,102 @@ import {
     Building,
 } from 'react-bootstrap-icons';
 import '../assets/css/Vacancy.css';
-const jobsData = [
-    {
-        id: 1,
-        title: 'Frontend Developer',
-        status: 'Open',
-        applicationDeadline: '2025-06-15',
-        numberOfOpenings: 3,
-        jobDetail: {
-            jobTitle: 'Frontend Developer',
-            jobDescription: 'Build React-based UIs using modern frameworks.',
-            requiredSkills: 'React, JavaScript, HTML, CSS',
-            experience: '2+ years',
-            jobType: 'Full-time',
-            jobLocation: 'Remote',
-            companyName: 'TechCorp',
-            numberOfOpenings: 3,
-            maxApplications: 100,
-            applicationDeadline: '2025-06-15',
-        },
-    },
-    {
-        id: 2,
-        title: 'Backend Developer',
-        status: 'Closed',
-        applicationDeadline: '2025-05-01',
-        numberOfOpenings: 1,
-        jobDetail: {
-            jobTitle: 'Backend Developer',
-            jobDescription: 'Develop backend APIs and manage databases.',
-            requiredSkills: 'Node.js, Express, MongoDB',
-            experience: '3+ years',
-            jobType: 'Full-time',
-            jobLocation: 'On-site',
-            companyName: 'DevSolutions',
-            numberOfOpenings: 1,
-            maxApplications: 50,
-            applicationDeadline: '2025-05-01',
-        },
-    },
-    // Add more jobs here...
-];
+import { useEffect } from 'react';
+// const jobsData = [
+// {
+//     id: 1,
+//     title: 'Frontend Developer',
+//     status: 'Open',
+//     applicationDeadline: '2025-06-15',
+//     numberOfOpenings: 3,
+//     jobDetail: {
+//         jobTitle: 'Frontend Developer',
+//         jobDescription: 'Build React-based UIs using modern frameworks.',
+//         requiredSkills: 'React, JavaScript, HTML, CSS',
+//         experience: '2+ years',
+//         jobType: 'Full-time',
+//         jobLocation: 'Remote',
+//         companyName: 'TechCorp',
+//         numberOfOpenings: 3,
+//         maxApplications: 100,
+//         applicationDeadline: '2025-06-15',
+//     },
+// },
+// {
+//     id: 2,
+//     title: 'Backend Developer',
+//     status: 'Closed',
+//     applicationDeadline: '2025-05-01',
+//     numberOfOpenings: 1,
+//     jobDetail: {
+//         jobTitle: 'Backend Developer',
+//         jobDescription: 'Develop backend APIs and manage databases.',
+//         requiredSkills: 'Node.js, Express, MongoDB',
+//         experience: '3+ years',
+//         jobType: 'Full-time',
+//         jobLocation: 'On-site',
+//         companyName: 'DevSolutions',
+//         numberOfOpenings: 1,
+//         maxApplications: 50,
+//         applicationDeadline: '2025-05-01',
+//     },
+// },
+// Add more jobs here...
+// ];
 
 function Vacancy() {
-    const [jobs] = useState(jobsData);
+    const [jobs, setJobs] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [resume, setResume] = useState(null);
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState({ show: false, message: '', variant: 'info' });
+
+    useEffect(() => {
+        fetch('http://localhost:5000/jobs')
+            .then((res) => res.json())
+            .then((data) => {
+                const formattedJobs = data.map(job => {
+                    return {
+                        id: job.job_id,
+                        title: job.job_title,
+                        status: job.application_deadline
+                            ? new Date(job.application_deadline) > new Date()
+                                ? 'Open'
+                                : 'Closed'
+                            : 'Open', // if deadline is null, assume Open
+                        applicationDeadline: job.application_deadline
+                            ? new Date(job.application_deadline).toISOString().split('T')[0]
+                            : 'No deadline',
+                        numberOfOpenings: job.openings,
+                        jobDetail: {
+                            jobTitle: job.job_title,
+                            jobDescription: job.job_description,
+                            requiredSkills: job.required_skills.replace(/[{}"]/g, '').split(',').map(skill => skill.trim()).join(', '),
+                            experience: `${job.experience_required}+ years`,
+                            jobType: job.job_type[0],
+                            jobLocation: job.location,
+                            companyName: job.company_name,
+                            numberOfOpenings: job.openings,
+                            maxApplications: job.max_applications,
+                            applicationDeadline: job.application_deadline
+                                ? new Date(job.application_deadline).toISOString().split('T')[0]
+                                : 'No deadline',
+                        }
+                    };
+                });
+
+                setJobs(formattedJobs);
+            })
+            .catch((error) => {
+                console.error('Error fetching jobs:', error);
+                setToast({
+                    show: true,
+                    message: 'Failed to load jobs.',
+                    variant: 'danger'
+                });
+            });
+    }, []);
 
     const handleCardClick = (job) => {
         setSelectedJob((prev) => (prev?.id === job.id ? null : job));
@@ -94,8 +141,8 @@ function Vacancy() {
         <>
             <Container fluid className="bgbase">
                 <Row className="vacancy-row">
-                    <h2 className="vacancy-heading text-center mb-2">
-                        Explore Exciting Career Opportunities &mdash;  <strong className=" fw-bold"style={{color:"#389ae0"}}>Find Your Perfect Role Today</strong>
+                    <h2 className="vacancy-he   ading text-center mb-2">
+                        Explore Exciting Career Opportunities &mdash;  <strong className=" fw-bold" style={{ color: "#389ae0" }}>Find Your Perfect Role Today</strong>
                     </h2>
                     <p className='vacancy-subheading text-center mb-4'>"Find Jobs That Fit Your Skills and Ambition."</p>
                     {/* Left Column: Job Cards */}
@@ -178,7 +225,7 @@ function Vacancy() {
                                 >
                                     Apply
                                 </Button> */}
-                                <div  className="d-flex justify-content-end mt-3"
+                                <div className="d-flex justify-content-end mt-3"
                                     onClick={() => {
                                         if (selectedJob.status === 'Closed') {
                                             setToast({
@@ -206,7 +253,7 @@ function Vacancy() {
                                         Apply
                                     </Button>
                                 </div>
-{/* 
+                                {/* 
                                 <ToastContainer position="bottom-end" className="p-3">
                                     <Toast
                                         bg={toast.variant}
