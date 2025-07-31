@@ -67,10 +67,10 @@ export default function Candidates() {
     try{
       if (isUpdate) {
         await candidates.updateSelectedResume(selectedCandidates.resume_id, newData);
-        toast.success("Candidate updated successfully");
+        toast.success("Candidate record updated successfully");
       } else {
         await candidates.addSelectedResume(newData);
-        toast.success("Candidate added successfully");
+        toast.success("Candidate record added successfully");
       }
       handleGetData();
       handleModalClose();
@@ -90,7 +90,7 @@ export default function Candidates() {
     try {
       if (selectedId) {
         await candidates.deleteSelectedResume(selectedId);
-        toast.success(" deleted successfully");
+        toast.success("Candidate record deleted successfully");
         handleGetData();
       }
     } catch (error) {
