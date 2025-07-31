@@ -21,12 +21,12 @@ async function getSelectedResumeById(resumeId) {
   return response.json();
 }
 
-async function updateSelectedResume(id, data) {
+async function updateSelectedResume(resume_id, data) {
   try {
-    console.log("Updating selected_resume ID:", id);
+    console.log("Updating selected_resume ID:", resume_id);
     console.log("Updated data:", data);
 
-    const response = await fetch(`http://localhost:5000/resumes/update/${id}`, {
+    const response = await fetch(`http://localhost:5000/resumes/update/${resume_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -35,9 +35,6 @@ async function updateSelectedResume(id, data) {
         candidate_name: data.candidate_name,
         email: data.email,
         contact_number: data.contact_number,
-        skills: data.skills, // Send as comma-separated string or array depending on backend handling
-        experience: data.experience,
-        matching_score: data.matching_score,
       }),
     });
 

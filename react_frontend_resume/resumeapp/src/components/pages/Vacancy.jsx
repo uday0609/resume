@@ -94,7 +94,6 @@ function Vacancy() {
                         }
                     };
                 });
-
                 setJobs(formattedJobs);
             })
             .catch((error) => {
