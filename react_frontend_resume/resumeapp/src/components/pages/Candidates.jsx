@@ -12,17 +12,18 @@ import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import candidates from "../api/selectedCandidates";
 import { FaEdit, FaTrashAlt,FaCaretRight } from "react-icons/fa";
 export default function Candidates() {
   const [showAlert, setShowAlert] = useState(false);
   const [filterText, setFilterText] = useState("");
+  const [selectedCandidates, setSelectedCandidates] = useState([]);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [newData, setNewData] = useState({
-    name: "",
+    candidate_name: "",
     email: "",
-    phone: "",
-    address: "",
+    contact_number: "",
     company: "",
   });
 
@@ -31,41 +32,66 @@ export default function Candidates() {
   const [deleteModel, setDeleteModel] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   
+  useEffect(() => {
+      handleGetData();
+    }, []);
+  
+  const handleGetData = async () => {
+    try {
+      const result = await candidates.getAllSelectedResumes();
+      setSelectedCandidates(result);
+      setFilteredData(result);
+    } catch (error) {
+      console.error("Error fetching job posts:", error);
+    }
+  };
  
   const handleModalClose = () => {
     setShowModal(false);
     setNewData({
-      name: "",
+      candidate_name: "",
       email: "",
-      phone: "",
-      address: "",
+      contact_number: "",
       company: "",
     });
     setIsUpdate(false);
-   
+    setSelectedId(null);
   };
 
   const handleModalShow = () => {
     setShowModal(true);
   };
 
-  
   const handleSubmit = async (e) => {
-   
+    e.preventDefault();
+    try{
+      if (isUpdate) {
+        await candidates.updateSelectedResume(selectedCandidates.resume_id, newData);
+        toast.success("Candidate record updated successfully");
+      } else {
+        await candidates.addSelectedResume(newData);
+        toast.success("Candidate record added successfully");
+      }
+      handleGetData();
       handleModalClose();
-    
+    }
+    catch (error) {
+      console.error('Error submitting form:', error);
+      toast.error('Failed to submit form');
+    }
   };
+
   useEffect(() => {}, [filterText, data]);
   const handleDeleteClick = (row) => {
-    setSelectedId(row.id);
+    setSelectedId(row.resume_id);
     setDeleteModel(true);
   };
   const handleConfirmDelete = async () => {
     try {
       if (selectedId) {
-        
-        toast.success(" deleted successfully");
-       
+        await candidates.deleteSelectedResume(selectedId);
+        toast.success("Candidate record deleted successfully");
+        handleGetData();
       }
     } catch (error) {
       toast.error("Error deleting ");
@@ -74,22 +100,30 @@ export default function Candidates() {
       setSelectedId(null);
     }
   };
+
   const handleCancel = () => {
     setDeleteModel(false);
     setSelectedId(null);
   };
-  const handleUpdateClick = (row) => {
-    
-    setNewData({
-      name: row.name,
-      email: row.email,
-      phone: row.phone,
-      address: row.address,
-      company: row.company, 
-    });
-    setIsUpdate(true);
-    handleModalShow();
+  
+  const handleUpdateClick = async (row) => {
+    try{
+      const data = await candidates.getSelectedResumeById(row.resume_id);
+      setSelectedId(data);
+      setNewData({
+        candidate_name: data.candidate_name,
+        email: data.email,
+        contact_number: data.contact_number,
+      });
+      setIsUpdate(true);
+      handleModalShow();
+    }
+    catch (error) {
+      console.error('Error fetching candidates:', error);
+      toast.error('Failed to fetch candidates data');
+    }
   };
+
   const columns = [
     {
       name: <b>S.No.</b>,
@@ -101,9 +135,9 @@ export default function Candidates() {
         fontWeight: "bold",
       },
     },
-    { name: <b>Name</b>, selector: (row) => row.name, sortable: true },
+    { name: <b>Name</b>, selector: (row) => row.candidate_name, sortable: true },
     { name: <b>Email</b>, selector: (row) => row.email, sortable: true },
-    { name: <b>Phone</b>, selector: (row) => row.phone, sortable: true },
+    { name: <b>Phone</b>, selector: (row) => row.contact_number, sortable: true },
    
     {
       name: <b>Actions</b>,
@@ -196,7 +230,6 @@ export default function Candidates() {
             </Row>
           </Container>
       </div>
-
       <Modal show={showModal} style={{ fontSize: "16px" }} size="lg" backdrop="static" onHide={handleModalClose}>
         <Modal.Header style={{ fontSize: "16px" }} closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
@@ -210,13 +243,13 @@ export default function Candidates() {
                 <Col>
                   <Form.Group className="mb-3">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control name="name" type="text" value={newData.name}  required/>
+                    <Form.Control name="name" type="text" value={newData.candidate_name}  required/>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group className="mb-3">
                     <Form.Label>Phone</Form.Label>
-                    <Form.Control name="phone" type="text" value={newData.phone}  required/>
+                    <Form.Control name="phone" type="text" value={newData.contact_number}  required/>
                   </Form.Group>
                 </Col>
               </Row>
@@ -225,13 +258,6 @@ export default function Candidates() {
                   <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
                     <Form.Control name="email" type="email" value={newData.email}  required/>
-                  </Form.Group>
-                </Col>
-
-                  <Col>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Address</Form.Label>
-                    <Form.Control name="address" type="text" value={newData.address} required/>
                   </Form.Group>
                 </Col>
               </Row>
